@@ -18,8 +18,10 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
-
+//ㅇㅇㅇㅇㅇㅇ
     @Column(nullable = false, unique = true)
+    // email 유효성 검사
+    // @Pattern <- 정규식 표현하는 어노테이션을 통해 엔티티에서 진행
     @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", message = "이메일이 올바른 형식이 아닙니다.")
     private String email;
 
