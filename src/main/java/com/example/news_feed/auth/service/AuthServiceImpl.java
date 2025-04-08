@@ -5,11 +5,15 @@ import com.example.news_feed.auth.dto.SignupRequestDto;
 import com.example.news_feed.config.PasswordEncoder;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,10 +47,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginRequestDto requestDto) {
-
+    public void login(LoginRequestDto requestDto, HttpServletRequest request) {
+        Optional<User> finduser = userRepository.findByEmail(requestDto.getEmail());
+        if(finduser.isPresent()){
+            User user = finduser.get();
+            if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
+                HttpSession session = request.getSession();
+                session.setAttribute("user",user.getEmail());
+            }
+        }
     }
-
-
-
 }
