@@ -46,6 +46,10 @@ public class UserServiceImpl implements UserService {
         findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword())); // 새 비번 저장
 
 
+    }
+
+    @Override
+    public void delete(Long id) {
 
     }
 

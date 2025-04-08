@@ -10,4 +10,6 @@ public interface UserService {
 
     void updateNameAndPw(Long id, UpdateNamePwRequestDto requestDto);
 
+    void delete(Long id);
+
 }
