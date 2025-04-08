@@ -1,7 +1,7 @@
 package com.example.news_feed.user.entity;
 
-import baseentity.BaseEntity;
-import common.Gender;
+import com.example.news_feed.baseentity.BaseEntity;
+import com.example.news_feed.common.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 //ㅇㅇㅇㅇㅇㅇ
     @Column(nullable = false, unique = true)
