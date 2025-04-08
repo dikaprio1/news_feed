@@ -15,7 +15,7 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false) //unique = true 제거
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
