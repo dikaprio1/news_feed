@@ -23,4 +23,5 @@ public abstract class BaseEntity {
     private LocalDateTime modifiedAt;
 
     private LocalDateTime deletedAt;
+    // 111
 }
