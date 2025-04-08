@@ -1,6 +1,7 @@
 package com.example.news_feed.board.dto;
 
 
+import com.example.news_feed.board.entity.Board;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +21,6 @@ public class BoardResponseDto {
     private LocalDateTime deletedAt;
 
 
-
     public BoardResponseDto(Long id, String title, String author,String content, String imageUrl,LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt ){
         this.id= id;
         this.title=title;
@@ -30,5 +30,12 @@ public class BoardResponseDto {
         this.createdAt=createdAt;
         this.updatedAt=updatedAt;
         this.deletedAt=deletedAt;
+    }
+
+    public BoardResponseDto(Long id, String title, String content) {
+    }
+
+    public BoardResponseDto (Board board) {
+       this(board.getId(), board.getTitle(), board.getContent());
     }
 }
