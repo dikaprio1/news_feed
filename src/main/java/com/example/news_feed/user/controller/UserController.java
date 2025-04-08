@@ -1,14 +1,12 @@
 package com.example.news_feed.user.controller;
 
+import com.example.news_feed.user.dto.UpdateNamePwRequestDto;
 import com.example.news_feed.user.dto.UserResponseDto;
 import com.example.news_feed.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // 유저 관리
 
@@ -27,7 +25,17 @@ public class UserController {
 
     }
 
-    // 프로필 수정 PUT api/users/{id} -> 이름, 비번
+    // 프로필 수정 PATCH api/users/{id} -> 이름, 비번
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateNameAndPw(
+            @PathVariable Long id,
+            @RequestBody UpdateNamePwRequestDto requestDto
+    ){
+        userService.updateNameAndPw(id,requestDto);
+
+        return new ResponseEntity<>(HttpStatus.OK); // 수정 성공시 200
+    }
+
 
 
     // 회원 탈퇴 DELETE? /api/users/{id} -> 완삭 아니고 소프트딜리트
