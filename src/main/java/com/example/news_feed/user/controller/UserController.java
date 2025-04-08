@@ -41,5 +41,4 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK); // 삭제 성공시 200
     }
 
-
 }
