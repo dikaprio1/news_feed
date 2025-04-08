@@ -24,4 +24,5 @@ public abstract class BaseEntity {
 
     private LocalDateTime deletedAt;
     // 111
+    // 2차수정
 }
