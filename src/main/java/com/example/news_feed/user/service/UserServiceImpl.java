@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-
+        User findUser = userRepository.findByIdOrElseThrow(id);
+        LocalDateTime now = LocalDateTime.now();
+        findUser.saveDeleteTime(now);
     }
 
 }
