@@ -23,7 +23,7 @@ public class SignupRequestDto {
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
-            message = "이메일 형식이 올바르지 않습니다")
+            message = "비밀번호는 영문, 숫자, 특수문자를 포함한 8자 이상이어야 합니다")
     private final String password;
 
     @NotNull
