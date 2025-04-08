@@ -49,17 +49,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void login(LoginRequestDto requestDto, HttpServletRequest request) {
         Optional<User> finduser = userRepository.findByEmail(requestDto.getEmail());
-        User user = finduser.get();
-
-        //if(user.isPresent()){
-            if(passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+        if(finduser.isPresent()){
+            User user = finduser.get();
+            if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
                 session.setAttribute("user",user.getEmail());
             }
         }
-
     }
-
-
-
 }
