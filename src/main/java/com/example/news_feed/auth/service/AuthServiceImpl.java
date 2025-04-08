@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void login(LoginRequestDto requestDto) {
+//        Optional<User> optionalUser = userRepository.findIdByEmailAndPassword();
+//        if (optionalUser.isPresent()){
+//            User user = optionalUser.get();
+//            //userRepository.findById()
+//        }
 
     }
 

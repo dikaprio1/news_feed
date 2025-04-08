@@ -24,7 +24,7 @@ public class AuthController {
 
     // 회원가입 POST /api/auth/signup
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequestDto requestDto){
+    public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequestDto requestDto){
         authService.signup(requestDto);
         return new ResponseEntity<>(HttpStatus.CREATED); // 가입 성공시 201
     }
