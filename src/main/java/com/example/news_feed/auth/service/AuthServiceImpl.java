@@ -1,5 +1,6 @@
 package com.example.news_feed.auth.service;
 
+import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 import com.example.news_feed.config.PasswordEncoder;
 import com.example.news_feed.user.entity.User;
@@ -29,8 +30,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 비번 암호화해서 저장
-        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        User user = new User(
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword()); // 암호화
+        User user = new User( // 암호화된 비밀번호 포함해서 요청으로 받아온 정보들 user에 담기
                 requestDto.getUsername(),
                 requestDto.getEmail(),
                 encodedPassword,
@@ -38,7 +39,14 @@ public class AuthServiceImpl implements AuthService {
                 requestDto.getAge()
         );
 
-        userRepository.save(user);
+        userRepository.save(user); // 저장
     }
+
+    @Override
+    public void login(LoginRequestDto requestDto) {
+
+    }
+
+
 
 }

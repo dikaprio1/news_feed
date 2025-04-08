@@ -1,5 +1,6 @@
 package com.example.news_feed.auth.controller;
 
+import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 
 import com.example.news_feed.auth.service.AuthService;
@@ -25,9 +26,14 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequestDto requestDto){
         authService.signup(requestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED); // 가입성공시 201
+        return new ResponseEntity<>(HttpStatus.CREATED); // 가입 성공시 201
     }
 
     // 로그인 POST /api/auth/login
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody LoginRequestDto requestDto){
+        authService.login(requestDto);
+        return new ResponseEntity<>(HttpStatus.OK); // 로그인 성공시 200
+    }
 
 }
