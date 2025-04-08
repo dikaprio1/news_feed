@@ -1,6 +1,7 @@
 package com.example.news_feed.board.service;
 
 
+import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
@@ -37,6 +38,17 @@ public class BoardServiceImpl implements BoardService{
         }
         return responseDtoList;
     }
-    }
 
-    //
+    // 게시물 수정
+    @Override
+    public void update(Long id, BoardRequestDto boardRequestDto) {
+        Board board = boardRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("게시물이 존재하지 않습니다")
+        );
+        board.update(boardRequestDto);
+        boardRepository.save(board);
+    }
+}
+
+
+

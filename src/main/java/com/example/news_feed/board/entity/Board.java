@@ -2,6 +2,7 @@ package com.example.news_feed.board.entity;
 
 
 import com.example.news_feed.baseentity.BaseEntity;
+import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +26,12 @@ public class Board extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+
+    public void update(BoardRequestDto boardRequestDto) {
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+    }
 
 }
 
