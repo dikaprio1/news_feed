@@ -4,7 +4,6 @@ import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 
 import com.example.news_feed.auth.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,8 +31,8 @@ public class AuthController {
 
     // 로그인 POST /api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<Void> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
-        authService.login(requestDto,request);
+    public ResponseEntity<Void> login(@RequestBody LoginRequestDto requestDto){
+        authService.login(requestDto);
         return new ResponseEntity<>(HttpStatus.OK); // 로그인 성공시 200
     }
 
