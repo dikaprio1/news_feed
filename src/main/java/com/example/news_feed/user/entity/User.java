@@ -1,7 +1,7 @@
 package com.example.news_feed.user.entity;
 
-import baseentity.BaseEntity;
-import common.Gender;
+import com.example.news_feed.baseentity.BaseEntity;
+import com.example.news_feed.common.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package baseentity;
+package com.example.news_feed.baseentity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -22,6 +22,5 @@ public abstract class BaseEntity {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @LastModifiedDate
     private LocalDateTime deletedAt;
 }

@@ -1,7 +1,7 @@
 package com.example.news_feed.board.entity;
 
 
-import baseentity.BaseEntity;
+import com.example.news_feed.baseentity.BaseEntity;
 import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.example.news_feed.auth.dto;
 
-import common.Gender;
+import com.example.news_feed.common.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

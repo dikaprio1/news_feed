@@ -1,6 +1,6 @@
 package com.example.news_feed.user.dto;
 
-import common.Gender;
+import com.example.news_feed.common.Gender;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
