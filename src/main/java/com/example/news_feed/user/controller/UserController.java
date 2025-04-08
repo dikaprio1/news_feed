@@ -22,7 +22,6 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
         UserResponseDto userResponseDto = userService.findById(id);
         return new ResponseEntity<>(userResponseDto,HttpStatus.OK); // 조회 성공시 200
-
     }
 
     // 프로필 수정 PATCH api/users/{id} -> 이름, 비번
@@ -32,12 +31,14 @@ public class UserController {
             @RequestBody UpdateNamePwRequestDto requestDto
     ){
         userService.updateNameAndPw(id,requestDto);
-
         return new ResponseEntity<>(HttpStatus.OK); // 수정 성공시 200
     }
 
-
-
     // 회원 탈퇴 DELETE? /api/users/{id} -> 완삭 아니고 소프트딜리트
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Void> delete(@PathVariable Long id){
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK); // 삭제 성공시 200
+    }
 
 }
