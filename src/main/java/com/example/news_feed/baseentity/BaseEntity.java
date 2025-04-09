@@ -23,6 +23,4 @@ public abstract class BaseEntity {
     private LocalDateTime modifiedAt;
 
     private LocalDateTime deletedAt;
-    // 111
-    // 2차수정
 }
