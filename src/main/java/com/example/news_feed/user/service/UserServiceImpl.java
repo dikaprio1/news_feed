@@ -21,12 +21,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //프로필 조회
     @Override
     public UserResponseDto findById(Long id) {
         User findUser = userRepository.findByIdOrElseThrow(id);
+        if (findUser.getDeletedAt() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"이미 탈퇴한 회원입니다"); //400
+        }
         return new UserResponseDto(findUser.getName(), findUser.getEmail(), findUser.getGender(), findUser.getAge());
     }
 
+    //이름수정
     @Transactional
     @Override
     public void updateName(Long id, updateNameRequestDto requestDto) {
@@ -44,6 +49,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    //비번수정
     @Transactional
     @Override
     public void updatePassword(Long id, updatePwRequestDto requestDto) {
@@ -60,6 +66,7 @@ public class UserServiceImpl implements UserService {
             findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
     }
 
+    //회원탈퇴
     @Transactional
     @Override
     public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto) {
