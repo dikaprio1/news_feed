@@ -6,11 +6,13 @@ import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "board")
 public class Board extends BaseEntity{
 
@@ -21,11 +23,20 @@ public class Board extends BaseEntity{
     @Column(nullable = false)
     private String title;
 
+
+    public Board(){
+
+    }
+
+    public Board(String title, String content,String image){
+        this.title = title;
+        this.content = content;
+        this.image = image;
+    }
+
     @Column(nullable = false)
     private String content;
     private String image;
-    private String author;
-    private LocalDateTime createdAt;
 
     //유저 참조
     @ManyToOne

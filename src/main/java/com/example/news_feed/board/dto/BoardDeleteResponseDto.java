@@ -1,12 +1,15 @@
 package com.example.news_feed.board.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@RequiredArgsConstructor
 public class BoardDeleteResponseDto {
-    private Long id;
-    private LocalDateTime deletedAt;
-    private String message;
+    private final Long id;
+    private final LocalDateTime deletedAt;
+    private final String message;
 }

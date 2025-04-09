@@ -5,9 +5,11 @@ import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
+import com.example.news_feed.user.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -16,17 +18,22 @@ import java.time.LocalDateTime;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
 
     @Override
-    public BoardResponseDto createPosts(BoardRequestDto boardRequestDto) {
-        Board board = new Board(); // 엔티티 매핑
+    public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
+        Board board = new Board(boardRequestDto.getTitle(),
+                boardRequestDto.getContents(),
+                boardRequestDto.getImage());
+        String email = (String) session.getAttribute("user");
 
-        board.setTitle(boardRequestDto.getTitle());
-        board.setContent(boardRequestDto.getContent());
-        board.setImage(boardRequestDto.getImage());
-        board.setAuthor(boardRequestDto.getAuthor());
-        board.setCreatedAt(LocalDateTime.now());
+        User finduser = userRepository.findByEmailOrElseThrow(email);
+        board.setUser();
+
+
+
+
 
         Board savedBoard = boardRepository.save(board); // 엔티티 저장
 
@@ -35,8 +42,8 @@ public class BoardServiceImpl implements BoardService {
         responseDto.setTitle(savedBoard.getTitle());
         responseDto.setContent(savedBoard.getContent());
         responseDto.setImage(savedBoard.getImage());
-        responseDto.setAuthor(savedBoard.getAuthor());
-        responseDto.setCreatedAt(savedBoard.getCreatedAt());
+//        responseDto.setAuthor(savedBoard.getAuthor());
+//        responseDto.setCreatedAt(savedBoard.getCreatedAt());
 
         return responseDto;
     }
@@ -51,7 +58,6 @@ public class BoardServiceImpl implements BoardService {
         LocalDateTime deletedAt = LocalDateTime.now(); // 삭제 시간 기록
 
         BoardDeleteResponseDto deleteResponseDto = new BoardDeleteResponseDto(); // 삭제 응답
-        deleteResponseDto.setId(id);
         deleteResponseDto.setDeletedAt(deletedAt);
         deleteResponseDto.setMessage("삭제되었습니다");
 

@@ -5,15 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardRequestDto {
-    private long Id;
-    private String author;
-    private String content;
-    private String image;
+    private final String contents;
+    private final String image;
 
     @NotNull(message = "제목은 필수입니다")
-    private String title;
+    private final String title;
 
 }
