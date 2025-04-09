@@ -8,11 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardRequestDto {
-
-    @NotNull(message = "제목은 필수입니다")
-    private String title;
+    private long Id;
     private String author;
     private String content;
     private String image;
+
+    @NotNull(message = "제목은 필수입니다")
+    private String title;
 
 }
