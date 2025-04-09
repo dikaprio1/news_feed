@@ -6,14 +6,14 @@ import com.example.news_feed.follow.entity.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow, Long>{
 
 
     Boolean existsByFollowerIdAndFollowingId(Long myId, Long followId);
 
-    List<FollowingResponseDto> findByFollowerId();
 
-    List<FollowerResponseDto> findByFollwingId();
+    List<Follow> findByFollowerId(Long myId);
+    List<Follow> findByFollowingId(Long myId);
+
 }

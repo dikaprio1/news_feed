@@ -30,15 +30,15 @@ public class FollowController {
     // Follower(나를 팔로잉하는 사람들) 목록 조회
 
     @GetMapping("/followers")
-    public ResponseEntity<List<FollowerResponseDto>> findFollowers(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
-        List<FollowerResponseDto> followerResponseDto = followservice.findFollowers(followRequestDto, loginEmail);
+    public ResponseEntity<List<FollowerResponseDto>> findFollowers(@SessionAttribute(name = "user") String loginEmail) {
+        List<FollowerResponseDto> followerResponseDto = followservice.findFollowers(loginEmail);
         return new ResponseEntity<>(followerResponseDto ,HttpStatus.OK);
     }
 
     // Following(내가 팔로잉 한 사람들) 목록 조회
     @GetMapping("/followings")
-    public ResponseEntity<List<FollowingResponseDto>> findFollowings(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
-        List<FollowingResponseDto> followingResponseDto = followservice.findFollowings(followRequestDto, loginEmail);
+    public ResponseEntity<List<FollowingResponseDto>> findFollowings(@SessionAttribute(name = "user") String loginEmail) {
+        List<FollowingResponseDto> followingResponseDto = followservice.findFollowings(loginEmail);
         return new ResponseEntity<>(followingResponseDto, HttpStatus.OK);
     }
 

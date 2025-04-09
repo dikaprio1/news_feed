@@ -116,7 +116,7 @@ public class FollowServiceImpl implements FollowService{
     }
     // Follower(나를 팔로잉하는 사람들) 목록 조회
     @Override
-    public List<FollowerResponseDto> findFollowers(FollowRequestDto followRequestDto, String loginEmail) {
+    public List<FollowerResponseDto> findFollowers(String loginEmail) {
         // 세션에서 받아온 내 email의 user_id 구하기
         Optional<User> me = userRepository.findByEmail(loginEmail);
         // myEmail로 조회한 DB가 존재할때만 실행
@@ -127,13 +127,17 @@ public class FollowServiceImpl implements FollowService{
             // user에서 user_id값만 추출
             myId = user.getId();
         }
+        // myId를 followingId라고 세팅하고, 대응하는 followerId를 List로 가져오기
+        List<Follow> followerIdList = followRepository.findEmailByFollowingId(myId);
+        // 가져온 followingId List의 followingId들을 user 테이블에서 email로 변환
+
 
         return followRepository.findByFollwingId();
     }
 
     // Following(내가 팔로잉 한 사람들) 목록 조회
     @Override
-    public List<FollowingResponseDto> findFollowings(FollowRequestDto followRequestDto, String loginEmail) {
+    public List<FollowingResponseDto> findFollowings(String loginEmail) {
         // 세션에서 받아온 내 email의 user_id 구하기
         Optional<User> me = userRepository.findByEmail(loginEmail);
         // myEmail로 조회한 DB가 존재할때만 실행
@@ -144,7 +148,13 @@ public class FollowServiceImpl implements FollowService{
             // user에서 user_id값만 추출
             myId = user.getId();
         }
-        return followRepository.findByFollowerId();
+        // myId를 followerId라고 세팅하고, 대응하는 followingId를 List로 가져오기
+        List<Follow> followingIdList = followRepository.findEmailByFollowerId(myId);
+        // 가져온 followingId List의 followingId들을 user 테이블에서 email로 변환
+
+
+
+        return followRepository.findEmailByFollowerId();
     }
 
 
