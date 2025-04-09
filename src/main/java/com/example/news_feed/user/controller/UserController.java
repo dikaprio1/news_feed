@@ -5,6 +5,7 @@ import com.example.news_feed.user.dto.UpdateNamePwRequestDto;
 import com.example.news_feed.user.dto.DeleteRequestDto;
 import com.example.news_feed.user.dto.UserResponseDto;
 import com.example.news_feed.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateNameAndPw(
             @PathVariable Long id,
-            @RequestBody UpdateNamePwRequestDto requestDto
+            @Valid @RequestBody UpdateNamePwRequestDto requestDto
     ){
         userService.updateNameAndPw(id,requestDto);
         return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK); // 수정 성공시 200 + 메세지 "프로필 수정 완료"
@@ -38,7 +39,9 @@ public class UserController {
 
     // 회원 탈퇴 DELETE? /api/users/{id} -> 완삭 아니고 소프트딜리트
     @DeleteMapping("/{id}")
-    private ResponseEntity<DeleteResponseDto> delete(@PathVariable Long id, DeleteRequestDto requestDto){
+    private ResponseEntity<DeleteResponseDto> delete(
+            @PathVariable Long id,
+            @Valid @RequestBody DeleteRequestDto requestDto){
         DeleteResponseDto deleteDate = userService.delete(id, requestDto);
         return new ResponseEntity<>(deleteDate, HttpStatus.OK); // 삭제 성공시 200
     }

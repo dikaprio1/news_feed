@@ -7,6 +7,7 @@ import com.example.news_feed.user.dto.DeleteRequestDto;
 import com.example.news_feed.user.dto.UserResponseDto;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -48,12 +49,13 @@ public class UserServiceImpl implements UserService {
         findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword())); // 새 비번 저장
     }
 
+    @Transactional
     @Override
     public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto) {
 
         User findUser = userRepository.findByIdOrElseThrow(id);
 
-        if (!requestDto.getEmail().equals(findUser.getEmail())){
+        if (!findUser.getEmail().equals(requestDto.getEmail())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디가 일치하지 않습니다"); // 아이디 불일치 401 반환
         }
 
