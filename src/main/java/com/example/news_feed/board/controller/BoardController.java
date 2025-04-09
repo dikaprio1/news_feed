@@ -20,13 +20,13 @@ public class BoardController {
 
     @PostMapping // 게시물 생성
     public ResponseEntity<BoardResponseDto> createPosts(@RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
-        BoardResponseDto boardResponseDto = boardService.createPosts(boardRequestDto);
+        BoardResponseDto boardResponseDto = boardService.createPosts(boardRequestDto,session);
         return new ResponseEntity<>(boardResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePosts(@PathVariable Long id){
-        BoardDeleteResponseDto responseDto = boardService.deletePost(id);
+        boardService.deletePost(id);
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
     }
 }

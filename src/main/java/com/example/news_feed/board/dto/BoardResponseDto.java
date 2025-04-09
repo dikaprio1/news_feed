@@ -23,7 +23,4 @@ public class BoardResponseDto {
 
     private final String content;
     private final String image;
-
-    @CreatedDate
-    private final LocalDateTime createdAt;
 }

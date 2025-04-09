@@ -5,10 +5,10 @@ import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
+import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,23 +29,13 @@ public class BoardServiceImpl implements BoardService {
         String email = (String) session.getAttribute("user");
 
         User finduser = userRepository.findByEmailOrElseThrow(email);
-        board.setUser();
 
-
-
-
+        board.setUser(finduser);
 
         Board savedBoard = boardRepository.save(board); // 엔티티 저장
 
-        BoardResponseDto responseDto = new BoardResponseDto(); // 응답
-        responseDto.setId(savedBoard.getId());
-        responseDto.setTitle(savedBoard.getTitle());
-        responseDto.setContent(savedBoard.getContent());
-        responseDto.setImage(savedBoard.getImage());
-//        responseDto.setAuthor(savedBoard.getAuthor());
-//        responseDto.setCreatedAt(savedBoard.getCreatedAt());
 
-        return responseDto;
+        return new BoardResponseDto(board.getTitle(),finduser.getName(),board.getContent(),board.getImage());
     }
 
     @Override
@@ -57,11 +47,7 @@ public class BoardServiceImpl implements BoardService {
 
         LocalDateTime deletedAt = LocalDateTime.now(); // 삭제 시간 기록
 
-        BoardDeleteResponseDto deleteResponseDto = new BoardDeleteResponseDto(); // 삭제 응답
-        deleteResponseDto.setDeletedAt(deletedAt);
-        deleteResponseDto.setMessage("삭제되었습니다");
-
-        return deleteResponseDto;
+        return new BoardDeleteResponseDto(board.getId(), deletedAt,"삭제되었습니다.");
     }
 
 }
