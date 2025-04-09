@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+// 프로필 - 비번 수정 요청
+
 @Getter
 @RequiredArgsConstructor
-public class UpdateNamePwRequestDto {
-
-    private final String username;
+public class updatePwRequestDto {
 
     @NotNull(message = "현재 비밀번호를 입력해주세요")
     private final String oldPassword;
