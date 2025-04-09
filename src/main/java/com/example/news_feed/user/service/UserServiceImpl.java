@@ -1,7 +1,9 @@
 package com.example.news_feed.user.service;
 
 import com.example.news_feed.config.PasswordEncoder;
+import com.example.news_feed.user.dto.DeleteResponseDto;
 import com.example.news_feed.user.dto.UpdateNamePwRequestDto;
+import com.example.news_feed.user.dto.DeleteRequestDto;
 import com.example.news_feed.user.dto.UserResponseDto;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
@@ -44,15 +46,29 @@ public class UserServiceImpl implements UserService {
         }
 
         findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword())); // 새 비번 저장
-
-
     }
 
     @Override
-    public void delete(Long id) {
+    public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto) {
+
         User findUser = userRepository.findByIdOrElseThrow(id);
+
+        if (!requestDto.getEmail().equals(findUser.getEmail())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디가 일치하지 않습니다"); // 아이디 불일치 401 반환
+        }
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), findUser.getPassword())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // 비번 불일치 401 반환
+        }
+
+        if (findUser.getDeletedAt() != null){
+            throw new ResponseStatusException(HttpStatus.CONFLICT); // 이미 탈퇴한 회원 409 반환
+        }
+
         LocalDateTime now = LocalDateTime.now();
         findUser.saveDeleteTime(now);
+        return new DeleteResponseDto(findUser.getDeletedAt(),"회원탈퇴 성공");
+
     }
 
 }
