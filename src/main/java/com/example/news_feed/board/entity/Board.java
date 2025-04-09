@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "board")
-public class Board extends BaseEntity{
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +37,12 @@ public class Board extends BaseEntity{
     }
 
     private LocalDateTime deletedAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
     private String imageUrl;
-
 }
+
+
 
 
 

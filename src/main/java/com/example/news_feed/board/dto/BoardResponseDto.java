@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
         private final String imageUrl;
 
         private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
+        private final LocalDateTime modifiedAt;
         private final LocalDateTime deletedAt;
 
 
@@ -28,13 +28,13 @@ import java.time.LocalDateTime;
         // final필드는 생성자에서 무조건 초기화해줘야해서 필요함
         // 이 생성자를 통해 외부에서도 DTO를 만들수있음
         public BoardResponseDto(Long id, String title, String content, String imageUrl,
-                                LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+                                LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
             this.id = id;
             this.title = title;
             this.content = content;
             this.imageUrl = imageUrl;
             this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
+            this.modifiedAt = modifiedAt;
             this.deletedAt = deletedAt;
         }
 
@@ -49,7 +49,7 @@ import java.time.LocalDateTime;
                     board.getContent(),
                     board.getImageUrl(),
                     board.getCreatedAt(),
-                    board.getUpdatedAt(),
+                    board.getModifiedAt(),
                     board.getDeletedAt()
             );
         }
