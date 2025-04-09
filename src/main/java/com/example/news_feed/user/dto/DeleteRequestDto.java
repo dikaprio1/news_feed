@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class UserRequestDto {
+public class DeleteRequestDto {
 
     @NotNull(message = "이메일을 입력해주세요")
     private final String email;
