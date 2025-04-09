@@ -23,6 +23,4 @@ public class BoardController {
         return ResponseEntity.ok(boardResponseDto);
     }
 
-    @DeleteMapping("/{id}") // 게시물 삭제
-    public
 }
