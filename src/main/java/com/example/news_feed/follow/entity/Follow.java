@@ -25,4 +25,11 @@ public class Follow {
     private User followingId;
 
     private LocalDateTime createdAt;
+
+    public Follow(Long myId, Long followId) {
+    }
+
+    public Follow() {
+
+    }
 }

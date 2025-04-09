@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class FollowRequestDto {
+
+    //follow할 유저의 email
     @NotNull
     private final String  email;
 
