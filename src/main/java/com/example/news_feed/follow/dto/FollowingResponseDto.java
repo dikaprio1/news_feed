@@ -1,15 +1,13 @@
 package com.example.news_feed.follow.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
-public class FollowRequestDto {
+public class FollowingResponseDto {
 
-    //follow할 유저의 email
-    @NotNull
     private final String email;
-
 }

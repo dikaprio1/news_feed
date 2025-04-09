@@ -1,14 +1,15 @@
 package com.example.news_feed.follow.controller;
 
 import com.example.news_feed.follow.dto.FollowRequestDto;
-import com.example.news_feed.follow.dto.FollowResponseDto;
+import com.example.news_feed.follow.dto.FollowerResponseDto;
+import com.example.news_feed.follow.dto.FollowingResponseDto;
 import com.example.news_feed.follow.service.FollowService;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController //
 @RequestMapping("/follow") // API 매핑 정하기
@@ -18,31 +19,33 @@ public class FollowController {
     private final FollowService followservice;
 
 
-    // Following 하기 (send?)
+    // Following 하기
     @PostMapping("/request")
-    public ResponseEntity<Void> registerFollow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest request) {
-        followservice.registerFollow(followRequestDto, request);
+    public ResponseEntity<Void> registerFollow(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
+        followservice.registerFollow(followRequestDto, loginEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     // Follower(나를 팔로잉하는 사람들) 목록 조회
-    /*
-    @GetMapping("/follow/follower")
-    public ResponseEntity<FollowResponseDto> findAll() {
 
-        return new ResponseEntity<>( ,HttpStatus.OK);
+    @GetMapping("/followers")
+    public ResponseEntity<List<FollowerResponseDto>> findFollowers(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
+        List<FollowerResponseDto> followerResponseDto = followservice.findFollowers(followRequestDto, loginEmail);
+        return new ResponseEntity<>(followerResponseDto ,HttpStatus.OK);
     }
 
     // Following(내가 팔로잉 한 사람들) 목록 조회
-    @GetMapping("/follow/following")
-    public ResponseEntity<FollowResponseDto> findAll() {
-        FollowResponseDto followResponseDto = followservice.findAllFollowing();
-        return new ResponseEntity<>(, HttpStatus.OK);
+    @GetMapping("/followings")
+    public ResponseEntity<List<FollowingResponseDto>> findFollowings(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
+        List<FollowingResponseDto> followingResponseDto = followservice.findFollowings(followRequestDto, loginEmail);
+        return new ResponseEntity<>(followingResponseDto, HttpStatus.OK);
     }
 
-
-   */
-
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteFollow(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
+        followservice.deleteFollow(followRequestDto, loginEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
