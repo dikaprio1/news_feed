@@ -127,7 +127,7 @@ public class FollowServiceImpl implements FollowService{
         // myId를 followerId라고 세팅하고, 대응하는 followingId를 담을 List 생성
         List<Follow> followingIdList = followRepository.findByFollowingId(me);
 
-        
+
         List<FollowingResponseDto> followingEmailList = followingIdlist.
 
 
