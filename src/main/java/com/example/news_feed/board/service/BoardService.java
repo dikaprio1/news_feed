@@ -8,7 +8,8 @@ import java.util.List;
 public interface BoardService {
 
 
-    BoardResponseDto getById(Long id);
+    // 게시물 조회
+    BoardResponseDto findById(Long id);
 
     List<BoardResponseDto> getAll();
 

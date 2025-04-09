@@ -5,6 +5,7 @@ import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.service.BoardService;
 import com.example.news_feed.board.service.BoardServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +20,15 @@ public class BoardController {
 
     // 게시물목록 조회
     @GetMapping
-    public List<BoardResponseDto> getAll() {
-        return boardService.getAll();
+    public ResponseEntity<List<BoardResponseDto>> getAll() {
+        return ResponseEntity.ok(boardService.getAll());
     }
 
     // 게시물 조회
     @GetMapping("/{id}")
-    public BoardResponseDto getById(
-            @PathVariable Long id
-    ) {
-        return boardService.getById(id);
+    public ResponseEntity<BoardResponseDto> findById(@PathVariable Long id) {
+        BoardResponseDto responseDto = boardService.findById(id);
+        return ResponseEntity.ok(responseDto);
     }
 
     // 게시물 수정

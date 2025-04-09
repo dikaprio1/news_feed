@@ -7,6 +7,8 @@ import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Table(name = "board")
@@ -32,6 +34,11 @@ public class Board extends BaseEntity{
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
     }
+
+    private LocalDateTime deletedAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private String imageUrl;
 
 }
 

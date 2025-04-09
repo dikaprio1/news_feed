@@ -23,4 +23,7 @@ public abstract class BaseEntity {
     private LocalDateTime modifiedAt;
 
     private LocalDateTime deletedAt;
+
+    private String getImageUrl;
+
 }
