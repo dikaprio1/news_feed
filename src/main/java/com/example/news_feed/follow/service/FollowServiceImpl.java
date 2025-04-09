@@ -34,13 +34,11 @@ public class FollowServiceImpl implements FollowService{
         // 세션에서 받아온 내 email의 user_id 구하기
         User me = userRepository.findByEmail(loginEmail).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long myId = me.getId();
 
         // follow할 email의 user_id 구하기
         String followEmail = followRequestDto.getEmail();
         User followUser = userRepository.findByEmail(followEmail).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long followId = followUser.getId();
 
 
         // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
@@ -51,11 +49,11 @@ public class FollowServiceImpl implements FollowService{
 
         // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
 
-        Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(myId, followId);
+        Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(me, followUser);
 
         // 팔로우한 상태가 아니라면 등록
         if (Boolean.FALSE.equals(isFollowing)) {
-            Follow follow = new Follow(myId, followId);
+            Follow follow = new Follow(me.getId(), followUser.getId());
             followRepository.save(follow);
         }
     }
@@ -67,19 +65,17 @@ public class FollowServiceImpl implements FollowService{
         // 세션에서 받아온 내 email의 user_id 구하기
         User me = userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long myId = me.getId();
 
 
         // follow할 email의 user_id 구하기
         String followEmail = followRequestDto.getEmail();
         User followUser = userRepository.findByEmail(followEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long followId = followUser.getId();
 
-        Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(myId, followId);
+        Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(me, followUser);
 
         if (Boolean.TRUE.equals(isFollowing)) {
             // 삭제하기 위해 해당하는 팔로우 객체 가져오기.
-            Follow follow = followRepository.findByFollowerIdandFollowingId(myId,followId).orElseThrow(()
+            Follow follow = followRepository.findByFollowerIdAndFollowingId(me,followUser).orElseThrow(()
                     -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
 
             followRepository.delete(follow);
@@ -95,11 +91,10 @@ public class FollowServiceImpl implements FollowService{
         // 세션에서 받아온 내 email의 user_id 구하기
         User me = userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long myId = me.getId();
 
 
         // myId를 followingId라고 세팅하고, 대응하는 followerId를 List로 가져오기
-        List<Follow> followerIdList = followRepository.findByFollowingId(myId);
+        List<Follow> followerIdList = followRepository.findByFollowingId(me);
 
 
         // 가져온 followerIdList의 followerId들을
@@ -128,11 +123,20 @@ public class FollowServiceImpl implements FollowService{
         // 세션에서 받아온 내 email의 user_id 구하기
         User me = userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-        Long myId = me.getId();
+
+        // myId를 followerId라고 세팅하고, 대응하는 followingId를 담을 List 생성
+        List<Follow> followingIdList = followRepository.findByFollowingId(me);
+
+        
+        List<FollowingResponseDto> followingEmailList = followingIdlist.
 
 
-        // myId를 followerId라고 세팅하고, 대응하는 followingId를 List로 가져오기
-        List<Follow> followingIdList = followRepository.findByFollowerId(myId);
+        /*
+        List<Follow> followingIdList = new ArrayList<>();
+        // for문을 통해 넣기
+        for ()
+         */
+
 
         // 가져온 followingIdList의 followingId들을
         // user 테이블에서 참조받은 email로 변환하는 과정

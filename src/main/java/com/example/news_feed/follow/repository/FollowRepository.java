@@ -12,11 +12,11 @@ import java.util.Optional;
 public interface FollowRepository extends JpaRepository<Follow, Long>{
 
 
-    Boolean existsByFollowerIdAndFollowingId(Long myId, Long followId);
+    Boolean existsByFollowerIdAndFollowingId(User followerId, User followingId);
 
 
-    List<Follow> findByFollowerId(Long myId);
-    List<Follow> findByFollowingId(Long myId);
+    List<Follow> findByFollowerId(User followerId);
+    List<Follow> findByFollowingId(User followingId);
 
-    Optional<Follow> findByFollowerIdandFollowingId(Long myId, Long followId);
+    Optional<Follow> findByFollowerIdAndFollowingId(User followerId, User followingId);
 }
