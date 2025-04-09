@@ -24,7 +24,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
         Board board = new Board(boardRequestDto.getTitle(),
-                boardRequestDto.getContents(),
+                boardRequestDto.getContent(),
                 boardRequestDto.getImage());
         String email = (String) session.getAttribute("user");
 
@@ -49,5 +49,4 @@ public class BoardServiceImpl implements BoardService {
 
         return new BoardDeleteResponseDto(board.getId(), deletedAt,"삭제되었습니다.");
     }
-
 }

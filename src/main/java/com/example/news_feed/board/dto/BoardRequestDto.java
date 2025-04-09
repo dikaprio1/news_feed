@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @RequiredArgsConstructor
 public class BoardRequestDto {
-    private final String contents;
+    private final String content;
     private final String image;
 
     @NotNull(message = "제목은 필수입니다")

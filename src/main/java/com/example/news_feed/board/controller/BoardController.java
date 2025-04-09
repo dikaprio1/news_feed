@@ -27,6 +27,6 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePosts(@PathVariable Long id){
         boardService.deletePost(id);
-        return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+        return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
     }
 }
