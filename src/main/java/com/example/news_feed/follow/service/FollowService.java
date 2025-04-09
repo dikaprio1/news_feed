@@ -15,11 +15,4 @@ public interface FollowService {
     public List<FollowerResponseDto> findFollowers(String loginEmail);
 
     public List<FollowingResponseDto> findFollowings(String loginEmail);
-
-
-    /*
-    public void findAllFollower();
-    public void findAllFollowing(FollowResponseDto followResponseDto);
-
-     */
 }

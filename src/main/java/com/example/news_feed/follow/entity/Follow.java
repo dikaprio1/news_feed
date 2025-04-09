@@ -27,9 +27,10 @@ public class Follow {
     private LocalDateTime createdAt;
 
     public Follow(Long myId, Long followId) {
+        this.followerId = new User(getId(myId));
+        this.followingId = new User(followId);
     }
 
     public Follow() {
-
     }
 }

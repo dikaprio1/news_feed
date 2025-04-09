@@ -18,7 +18,6 @@ public class FollowController {
 
     private final FollowService followservice;
 
-
     // Following 하기
     @PostMapping("/request")
     public ResponseEntity<Void> registerFollow(@RequestBody FollowRequestDto followRequestDto, @SessionAttribute(name = "user") String loginEmail) {
