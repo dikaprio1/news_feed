@@ -1,6 +1,8 @@
 package com.example.news_feed.user.controller;
 
+import com.example.news_feed.user.dto.DeleteResponseDto;
 import com.example.news_feed.user.dto.UpdateNamePwRequestDto;
+import com.example.news_feed.user.dto.DeleteRequestDto;
 import com.example.news_feed.user.dto.UserResponseDto;
 import com.example.news_feed.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,19 +28,19 @@ public class UserController {
 
     // 프로필 수정 PATCH api/users/{id} -> 이름, 비번
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateNameAndPw(
+    public ResponseEntity<String> updateNameAndPw(
             @PathVariable Long id,
             @RequestBody UpdateNamePwRequestDto requestDto
     ){
         userService.updateNameAndPw(id,requestDto);
-        return new ResponseEntity<>(HttpStatus.OK); // 수정 성공시 200
+        return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK); // 수정 성공시 200 + 메세지 "프로필 수정 완료"
     }
 
     // 회원 탈퇴 DELETE? /api/users/{id} -> 완삭 아니고 소프트딜리트
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> delete(@PathVariable Long id){
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK); // 삭제 성공시 200
+    private ResponseEntity<DeleteResponseDto> delete(@PathVariable Long id, DeleteRequestDto requestDto){
+        DeleteResponseDto deleteDate = userService.delete(id, requestDto);
+        return new ResponseEntity<>(deleteDate, HttpStatus.OK); // 삭제 성공시 200
     }
 
 }
