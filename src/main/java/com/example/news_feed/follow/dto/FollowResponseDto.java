@@ -6,8 +6,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class FollowRequestDto {
+public class FollowResponseDto {
     @NotNull
-    private final String  email;
+    private final String email;
+
+    private final Long Follower;
+
+    private final Long Following;
 
 }
