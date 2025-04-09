@@ -96,20 +96,17 @@ public class FollowServiceImpl implements FollowService{
         // myId를 followingId라고 세팅하고, 대응하는 followerId를 List로 가져오기
         List<Follow> followerIdList = followRepository.findByFollowingId(me);
 
-
-        // 가져온 followerIdList의 followerId들을
-        // user 테이블에서 참조받은 email로 변환하는 과정
-
         // 이메일을 담을 DTO 리스트 생성
         List<FollowerResponseDto> followerEmailList = new ArrayList<>();
 
         for (Follow follow : followerIdList) {
-            User follower = follow.getFollowerId();
+            // 첫번째로 대응하는 followerId가 오겠지.
+            // 그 객체에서
+            // 그걸로 그 ID에 대응하는 user 객체 생성
+            User followerId = follow.getFollowerId();
             // userId로 유저 조회 후 이메일 가져오기
-            User findUser = userRepository.findById(follower.getId()).orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-            String followerEmail = findUser.getEmail();
-
+            String followerEmail = followerId.getEmail();
+            //  EmailList에 add
             followerEmailList.add(new FollowerResponseDto(followerEmail));
         }
 
@@ -125,36 +122,24 @@ public class FollowServiceImpl implements FollowService{
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
 
         // myId를 followerId라고 세팅하고, 대응하는 followingId를 담을 List 생성
-        List<Follow> followingIdList = followRepository.findByFollowingId(me);
+        // sql 쿼리 결과를 조회해서 받아오는 식이기 때문에 List로 받아올 수 있음.
+        List<Follow> followingIdList = followRepository.findByFollowerId(me);
 
-
-        List<FollowingResponseDto> followingEmailList = followingIdlist.
-
-
-        /*
-        List<Follow> followingIdList = new ArrayList<>();
-        // for문을 통해 넣기
-        for ()
-         */
-
-
-        // 가져온 followingIdList의 followingId들을
-        // user 테이블에서 참조받은 email로 변환하는 과정
-
-        // 이메일을 담을 DTO 리스트 생성
         List<FollowingResponseDto> followingEmailList = new ArrayList<>();
 
-        for (Follow follow : followingIdList) {
-            User following = follow.getFollowingId();
-            // userId로 유저 조회 후 이메일 가져오기
-            User findUser = userRepository.findById(following.getId()).orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
-            String followingEmail = findUser.getEmail();
-
-            followingEmailList.add(new FollowingResponseDto(followingEmail));
+        for(Follow follow : followingIdList) {
+            // 첫번째로 대응하는 followingId가 오겠지.
+            // 그걸로 그 ID에 대응하는 user 객체 생성
+            User followingId = follow.getFollowingId();
+            // 생성한 객체에서 이메일만 뽑아서
+            String email = followingId.getEmail();
+            //  EmailList에 add
+            followingEmailList.add(new FollowingResponseDto(email));
         }
+        // 이제 그 list를 리턴시키면 마무리
 
         return followingEmailList;
+
     }
 
 
