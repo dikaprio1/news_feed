@@ -20,8 +20,8 @@ public class UserController {
     // 프로필 조회 GET api/users/{id}
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(
-            @PathVariable Long id,
-            @SessionAttribute(name = "user") String loginEmail
+            @PathVariable Long id
+            //@SessionAttribute(name = "user") String loginEmail
     ){
         UserResponseDto userResponseDto = userService.findById(id);
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK); // 조회 성공시 200
@@ -31,7 +31,7 @@ public class UserController {
     @PatchMapping("/{id}/name")
     public ResponseEntity<String> updateName(
             @PathVariable Long id,
-            @SessionAttribute(name = "user") String loginEmail,
+            //@SessionAttribute(name = "user") String loginEmail,
             @Valid @RequestBody updateNameRequestDto requestDto
     ){
         userService.updateName(id, requestDto);
@@ -42,7 +42,7 @@ public class UserController {
     @PatchMapping("/{id}/password")
     public ResponseEntity<String> updatePassword(
             @PathVariable Long id,
-            @SessionAttribute(name = "user") String loginEmail,
+            //@SessionAttribute(name = "user") String loginEmail,
             @Valid @RequestBody updatePwRequestDto requestDto
     ) {
         userService.updatePassword(id, requestDto);
@@ -53,7 +53,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     private ResponseEntity<DeleteResponseDto> delete(
             @PathVariable Long id,
-            @SessionAttribute(name = "user") String loginEmail,
+            //@SessionAttribute(name = "user") String loginEmail,
             @Valid @RequestBody DeleteRequestDto requestDto) {
         DeleteResponseDto deleteDate = userService.delete(id, requestDto);
         return new ResponseEntity<>(deleteDate, HttpStatus.OK); // 삭제 성공시 200
