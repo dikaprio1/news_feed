@@ -1,8 +1,7 @@
 package com.example.news_feed.follow.service;
 
 import com.example.news_feed.auth.service.AuthServiceImpl;
-import com.example.news_feed.exceptionhandler.FollowerNotFoundException;
-import com.example.news_feed.exceptionhandler.FollowingNotFoundException;
+import com.example.news_feed.exceptionhandler.FollowNotFoundException;
 import com.example.news_feed.exceptionhandler.UserNotFoundException;
 import com.example.news_feed.follow.dto.FollowResponseDto;
 import com.example.news_feed.follow.dto.FollowerResponseDto;
@@ -53,7 +52,7 @@ public class FollowService {
         User loginUser = authService.getLoginUser(session);
         List<Follow> findByUserIdFollower = followRepository.findByFollowerId(loginUser);
         if (findByUserIdFollower.isEmpty()) {
-            throw new FollowerNotFoundException("팔로워 정보가 없습니다.");
+            throw new FollowNotFoundException("팔로워 정보가 없습니다.");
         }
         List<User> followers = followRepository.findFollowingsByFollowerId(loginUser.getId());
         return followers.stream()
@@ -67,7 +66,7 @@ public class FollowService {
         User loginUser = authService.getLoginUser(session);
         List<Follow> findByUserIdFollowing = followRepository.findByFollowingId(loginUser);
         if (findByUserIdFollowing.isEmpty()) {
-            throw new FollowingNotFoundException("팔로잉 정보가 없습니다.");
+            throw new FollowNotFoundException("팔로잉 정보가 없습니다.");
         }
         List<User> followings = followRepository.findFollowersByFollowingId(loginUser.getId());
         return followings.stream()
