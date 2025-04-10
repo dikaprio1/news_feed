@@ -31,30 +31,36 @@ public class FollowServiceImpl implements FollowService{
 
         // controller부분에서@SessionAttribute(name = "key") String loginEmail 설정하면 서비스에서 받아올 필요 없음
 
-        // 세션에서 받아온 내 email의 user_id 구하기
-        User me = userRepository.findByEmail(loginEmail).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
+        // 맨 처음에 requestdto의 email과 세션에 있는 email을 비교하는 유효성 검증.
+        if (followRequestDto.getEmail().equals(loginEmail))
+             {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 팔로우할 수는 없습니다.");}
 
-        // follow할 email의 user_id 구하기
-        String followEmail = followRequestDto.getEmail();
-        User followUser = userRepository.findByEmail(followEmail).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
+        else {
+            // 세션에서 받아온 내 email의 user_id 구하기
+            User me = userRepository.findByEmail(loginEmail).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
+
+            // follow할 email의 user_id 구하기
+            String followEmail = followRequestDto.getEmail();
+            User followUser = userRepository.findByEmail(followEmail).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
 
 
-        // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
-        // 이 과정에서 내 email의 id값이 필요함 <- follow 테이블은 user_id에 참조되어있기 때문
-        // 추가로 follow한 email또한 id값을 알아야 함 <- follow 테이블에 저장된 값 또한 id로 되어 있을 거라서
-        // 짚고 넘어가야 할 점 - DB저장될 때, myId가 follower가 되는거고 followId가 following이 된다.
-        // 이후 조회 시, follower <- myId라고 하고 following을 조회하면 내가 follow하는 목록을 조회하는 느낌?
+            // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
+            // 이 과정에서 내 email의 id값이 필요함 <- follow 테이블은 user_id에 참조되어있기 때문
+            // 추가로 follow한 email또한 id값을 알아야 함 <- follow 테이블에 저장된 값 또한 id로 되어 있을 거라서
+            // 짚고 넘어가야 할 점 - DB저장될 때, myId가 follower가 되는거고 followId가 following이 된다.
+            // 이후 조회 시, follower <- myId라고 하고 following을 조회하면 내가 follow하는 목록을 조회하는 느낌?
 
-        // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
+            // followRequestDto에서 받아온 email이 내 email에 follow 되어 있는지 확인
 
-        Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(me, followUser);
+            Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(me, followUser);
 
-        // 팔로우한 상태가 아니라면 등록
-        if (Boolean.FALSE.equals(isFollowing)) {
-            Follow follow = new Follow(me.getId(), followUser.getId());
-            followRepository.save(follow);
+            // 팔로우한 상태가 아니라면 등록
+            if (Boolean.FALSE.equals(isFollowing)) {
+                Follow follow = new Follow(me.getId(), followUser.getId());
+                followRepository.save(follow);
+            }
         }
     }
 
@@ -62,6 +68,10 @@ public class FollowServiceImpl implements FollowService{
     // Follow 취소
     @Override
     public void deleteFollow(FollowRequestDto followRequestDto, String loginEmail) {
+        // 맨 처음에 requestdto의 email과 세션에 있는 email을 비교하는 유효성 검증.
+        if (followRequestDto.getEmail().equals(loginEmail))
+        {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 팔로우 삭제할 수는 없습니다.");}
+
         // 세션에서 받아온 내 email의 user_id 구하기
         User me = userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
@@ -69,7 +79,8 @@ public class FollowServiceImpl implements FollowService{
 
         // follow할 email의 user_id 구하기
         String followEmail = followRequestDto.getEmail();
-        User followUser = userRepository.findByEmail(followEmail).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
+        User followUser = userRepository.findByEmail(followEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."));
 
         Boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(me, followUser);
 
@@ -94,9 +105,12 @@ public class FollowServiceImpl implements FollowService{
 
 
         // myId를 followingId라고 세팅하고, 대응하는 followerId를 List로 가져오기
+        // sql 쿼리 결과를 조회해서 받아오는 식이기 때문에 List로 받아올 수 있음.
         List<Follow> followerIdList = followRepository.findByFollowingId(me);
 
         // 이메일을 담을 DTO 리스트 생성
+        // id에 맞는 email을 각각 뽑아와서 리스트로 넣어야 하니, sql 쿼리 조회 결과를 하나씩 리스트에 넣는 느낌
+        // 따라서 결과를 List로 받는 게 아닌, 만들어 놓고 결과를 하나씩 집어넣는다.
         List<FollowerResponseDto> followerEmailList = new ArrayList<>();
 
         for (Follow follow : followerIdList) {
@@ -125,6 +139,8 @@ public class FollowServiceImpl implements FollowService{
         // sql 쿼리 결과를 조회해서 받아오는 식이기 때문에 List로 받아올 수 있음.
         List<Follow> followingIdList = followRepository.findByFollowerId(me);
 
+        // id에 맞는 email을 각각 뽑아와서 리스트로 넣어야 하니, sql 쿼리 조회 결과를 하나씩 리스트에 넣는 느낌
+        // 따라서 결과를 List로 받는 게 아닌, 만들어 놓고 결과를 하나씩 집어넣는다.
         List<FollowingResponseDto> followingEmailList = new ArrayList<>();
 
         for(Follow follow : followingIdList) {
@@ -143,7 +159,7 @@ public class FollowServiceImpl implements FollowService{
     }
 
 
-
+    //
 
 
 
