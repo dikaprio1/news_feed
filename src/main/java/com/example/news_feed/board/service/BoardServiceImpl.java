@@ -1,5 +1,6 @@
 package com.example.news_feed.board.service;
 
+import ch.qos.logback.classic.Logger;
 import com.example.news_feed.board.dto.DeletePostRequestDto;
 import com.example.news_feed.board.dto.DeleteResponseDto;
 import com.example.news_feed.board.dto.BoardRequestDto;
@@ -38,23 +39,16 @@ public class BoardServiceImpl implements BoardService {
         }
 
         if (boardRequestDto.getTitle() == null || boardRequestDto.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "제목은 필수입니다"); // 제목이 null 일경우, 400 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "제목은 필수입니다"); // 제목이 null or 공백일경우, 400 반환
         }
 
         if (boardRequestDto.getContent() == null || boardRequestDto.getContent().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용은 필수입니다"); // 내용이 null 일경우 ,400 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용은 필수입니다"); // 내용이 null or 공백일경우 ,400 반환
         }
 
 
-        User finduser = userRepository.findByEmail(email)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"이메일을 찾을수없습니다")); // DB에 이메일이 없을경우 , 404 반환
-
-
+        User finduser = userRepository.findByEmailOrElseThrow(email);
         board.setUser(finduser);
-
-        if (finduser.getName() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"작성자 이름이 존재하지 않습니다"); // author(작성자)가 null 일경우 400 반환
-        }
 
         boardRepository.save(board); // 엔티티 저장
 
@@ -72,25 +66,32 @@ public class BoardServiceImpl implements BoardService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다"); // 로그인을안했을경우 , 401 반환
         }
 
-        if (!email.equals(requestDto.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "로그인된 유저와 이메일이 일치하지 않습니다"); // 세션이메일과 바디의이메일이 다를경우 , 403 반환
-        }
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
+
+        if (!email.equals(requestDto.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이메일이 일치하지 않습니다"); // email이 다른경우 , 403 반환
+        }
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // password가 다른경우 , 401 반환
         }
 
        Board board = boardRepository.findById(id) // 삭제할 게시물 조회
+<<<<<<< Updated upstream
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
+=======
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"게시글이 존재하지 않습니다. " + id)); // 게시물이 조회가 안됐을경우(없을경우), 404 반환
+>>>>>>> Stashed changes
 
         if (board.getUser() == null || board.getUser().getEmail() == null ||
                 !board.getUser().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 삭제 권한이 없습니다"); // 작성자 본인만 삭제할수있게 , 403 반환
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
         boardRepository.delete(board); // 게시물 하드삭제
 

@@ -28,6 +28,6 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePosts(@PathVariable Long id,@Valid @RequestBody DeletePostRequestDto requestDto, HttpSession session) {
         boardService.deletePost(id, requestDto, session);
-        return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+        return new ResponseEntity<>("삭제 성공", HttpStatus.OK); // 200 반환
     }
 }
