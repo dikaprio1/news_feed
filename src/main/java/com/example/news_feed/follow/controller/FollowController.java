@@ -19,8 +19,8 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/{id}")
-    public ResponseEntity<FollowResponseDto> followUser(@Valid @PathVariable Long id, HttpSession session){
+    public ResponseEntity<String> followUser(@Valid @PathVariable Long id, HttpSession session){
         FollowResponseDto followResponseDto = followService.followUser(id,session);
-        return new ResponseEntity<>(followResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(followResponseDto.getFollowerUserName()+"님이 "+followResponseDto.getFollowingUserName()+"님을 팔로우 하였습니다.", HttpStatus.OK);
     }
 }

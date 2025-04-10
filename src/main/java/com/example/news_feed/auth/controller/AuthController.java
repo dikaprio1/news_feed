@@ -32,9 +32,9 @@ public class AuthController {
 
     // 로그인 POST /api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<Void> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
-        authService.login(requestDto,request);
-        return new ResponseEntity<>(HttpStatus.OK); // 로그인 성공시 200
+    public ResponseEntity<String> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
+        String messege = authService.login(requestDto,request);
+        return new ResponseEntity<>(messege,HttpStatus.OK); // 로그인 성공시 200
     }
 
 }

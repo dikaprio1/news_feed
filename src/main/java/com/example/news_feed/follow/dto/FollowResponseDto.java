@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class FollowResponseDto {
 
     @NotNull
-    private final User follower;
+    private final String followerUserName;
     @NotNull
-    private final User following;
+    private final String followingUserName;
 }
