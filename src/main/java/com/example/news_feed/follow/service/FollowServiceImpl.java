@@ -58,7 +58,7 @@ public class FollowServiceImpl implements FollowService{
 
             // 팔로우한 상태가 아니라면 등록
             if (Boolean.FALSE.equals(isFollowing)) {
-                Follow follow = new Follow(me.getId(), followUser.getId());
+                Follow follow = new Follow(me, followUser);
                 followRepository.save(follow);
             }
         }
@@ -91,7 +91,7 @@ public class FollowServiceImpl implements FollowService{
             followRepository.delete(follow);
         }
     }
-    
+
     // Follower(나를 팔로잉하는 사람들) 목록 조회
     @Override
     public List<FollowerResponseDto> findFollowers(String loginEmail) {
@@ -109,6 +109,11 @@ public class FollowServiceImpl implements FollowService{
         // 따라서 결과를 List로 받는 게 아닌, 만들어 놓고 결과를 하나씩 집어넣는다.
         List<FollowerResponseDto> followerEmailList = new ArrayList<>();
 
+        // stream으로도 변환 고려
+        // 해당 for문에서 지연로딩의 단점 (n+1) 발생함. (stream, for 동일)
+        // 즉시로딩을 사용할 지,
+        // (n+1) 해결 방안 사용할 지 [쿼리 문 추가로 넣는 방안 생각 중]
+        // JPQL 쿼리문으로 대체하는 방식이 맞는 것 같은데 너무 복잡하고 이해 안 감.
         for (Follow follow : followerIdList) {
             // 첫번째로 대응하는 followerId가 오겠지.
             // 그 객체에서
@@ -137,6 +142,7 @@ public class FollowServiceImpl implements FollowService{
         // id에 맞는 email을 각각 뽑아와서 리스트로 넣어야 하니, sql 쿼리 조회 결과를 하나씩 리스트에 넣는 느낌
         // 따라서 결과를 List로 받는 게 아닌, 만들어 놓고 결과를 하나씩 집어넣는다.
         List<FollowingResponseDto> followingEmailList = new ArrayList<>();
+
 
         for(Follow follow : followingIdList) {
             // 첫번째로 대응하는 followingId가 오겠지.
