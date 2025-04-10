@@ -1,6 +1,5 @@
 package com.example.news_feed.board.dto;
 
-
 import com.example.news_feed.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

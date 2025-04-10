@@ -1,6 +1,5 @@
 package com.example.news_feed.board.service;
 
-
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
@@ -8,7 +7,6 @@ import com.example.news_feed.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
