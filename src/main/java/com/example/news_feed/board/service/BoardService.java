@@ -2,6 +2,9 @@ package com.example.news_feed.board.service;
 
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 public interface BoardService {
@@ -12,6 +15,7 @@ public interface BoardService {
 
     List<BoardResponseDto> getAll();
 
-    // 게시물 수정
-    void update(Long id, BoardRequestDto boardRequestDto);
+
+    @Transactional
+    void update(Long id, BoardRequestDto boardRequestDto, HttpSession session);
 }

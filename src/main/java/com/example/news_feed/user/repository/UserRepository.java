@@ -21,4 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
 
+    default User findByEmailOrElseThrow(String email) {
+        return findByEmail(email).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,"존재하지 않는 정보입니다.")); // 조회 실패시(해당 id 없을 때) 404, "존재하지 않는 정보입니다."
+    }
+
 }

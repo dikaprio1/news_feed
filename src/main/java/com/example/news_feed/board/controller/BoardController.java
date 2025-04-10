@@ -3,6 +3,7 @@ package com.example.news_feed.board.controller;
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.service.BoardServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,8 @@ public class BoardController {
    //boardService.update(id, boardRequestDto): 서비스계층에 수정로직 위임, DB에서 게시글찾고, 제목/내용 수정후 저장처리
    //return ResponseEntity.ok().build() : 200OK 응답본문없음, .build()쓰면 void타입응답을 깔끔히 반환가능
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
-        boardService.update(id, boardRequestDto);
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
+        boardService.update(id, boardRequestDto, session);
         return ResponseEntity.ok().build();
     }
 

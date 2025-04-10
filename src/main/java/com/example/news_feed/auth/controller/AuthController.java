@@ -4,6 +4,7 @@ import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 
 import com.example.news_feed.auth.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,16 +25,16 @@ public class AuthController {
 
     // 회원가입 POST /api/auth/signup
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequestDto requestDto){
+    public ResponseEntity<String> signup( @Valid @RequestBody SignupRequestDto requestDto){
         authService.signup(requestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED); // 가입 성공시 201
+        return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED); // 가입 성공시 201
     }
 
     // 로그인 POST /api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequestDto requestDto){
-        authService.login(requestDto);
-        return new ResponseEntity<>(HttpStatus.OK); // 로그인 성공시 200
+    public ResponseEntity<String> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
+        authService.login(requestDto,request);
+        return new ResponseEntity<>("로그인 성공", HttpStatus.OK); // 로그인 성공시 200
     }
 
 }
