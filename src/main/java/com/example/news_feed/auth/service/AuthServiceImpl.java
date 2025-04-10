@@ -49,10 +49,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginRequestDto requestDto, HttpServletRequest request) {
-        Optional<User> findUser = userRepository.findByEmail(requestDto.getEmail());
-        if (findUser.isEmpty()) {
-            throw new UserNotFoundException("존재하지 않는 사용자입니다.");
+    public void login(LoginRequestDto requestDto, HttpServletRequest request) {
+        Optional<User> finduser = userRepository.findByEmail(requestDto.getEmail()); // 나중에 리팩토링 고민
+        if(finduser.isPresent()){
+            User user = finduser.get();
+            if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
+                HttpSession session = request.getSession();
+                session.setAttribute("user",user.getEmail());
+            }
+
         }
         User user = findUser.get();
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
@@ -68,4 +73,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }
 
+
 }
+

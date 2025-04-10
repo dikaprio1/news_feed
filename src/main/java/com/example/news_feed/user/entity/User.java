@@ -12,7 +12,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(nullable = false)
@@ -45,7 +45,18 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.age = age;
     }
+
     public User(String name) {
         this.name = name;
     }
+
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateName(String name){
+        this.name = name;
+    }
+
 }

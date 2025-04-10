@@ -1,23 +1,19 @@
 package com.example.news_feed.board.dto;
 
 
+
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class BoardRequestDto {
+    private final String content;
 
-    @NotNull(message = "제목은 필수입니다")
-    private String title;
-
-    private String content;
-
-    private String image;
-
+    @NotBlank(message = "제목은 필수입니다")
+    private final String title;
+    private final String imageUrl;
+    private final String username;
 }
+
