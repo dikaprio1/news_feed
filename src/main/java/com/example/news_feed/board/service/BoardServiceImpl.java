@@ -84,7 +84,13 @@ public class BoardServiceImpl implements BoardService {
         }
 
        Board board = boardRepository.findById(id) // 삭제할 게시물 조회
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"게시글을 찾을수 없습니다. " + id)); // 게시물이 없을경우, 404 반환
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
+
+        if (board.getUser() == null || board.getUser().getEmail() == null ||
+                !board.getUser().getEmail().equals(email)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 삭제 권한이 없습니다"); // 작성자 본인만 삭제할수있게 , 403 반환
+        }
+
 
         boardRepository.delete(board); // 게시물 하드삭제
 
