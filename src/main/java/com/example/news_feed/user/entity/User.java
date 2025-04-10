@@ -46,7 +46,4 @@ public class User extends BaseEntity {
         this.age = age;
     }
 
-    public User(Long id) {
-        this.id = id;
-    }
 }
