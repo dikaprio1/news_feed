@@ -45,4 +45,13 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.age = age;
     }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateName(String name){
+        this.name = name;
+    }
+
 }
