@@ -66,6 +66,7 @@ public class BoardServiceImpl implements BoardService{
         board.update(boardRequestDto); //Board 엔티티안에 정의된 update() 메서드 호출
     }
 
+
 }
 
 

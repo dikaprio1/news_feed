@@ -18,4 +18,5 @@ public interface BoardService {
 
     @Transactional
     void update(Long id, BoardRequestDto boardRequestDto, HttpSession session);
+
 }

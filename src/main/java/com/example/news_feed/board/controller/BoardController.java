@@ -1,5 +1,6 @@
 package com.example.news_feed.board.controller;
 
+
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.service.BoardServiceImpl;
