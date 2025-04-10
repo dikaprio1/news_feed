@@ -1,21 +1,32 @@
 package com.example.news_feed.board.dto;
 
 
+
+import jakarta.persistence.EntityListeners;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.example.news_feed.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
+
+
+
     @Getter
     public class BoardResponseDto {
 
         @NotNull
         private final Long id;
-        @NotBlank
+        @NotNull(message = "제목은 필수입니다")
         private final String title;
         @NotBlank
         private final String content;
+        @NotNull
+        private final String author;
         private final String imageUrl;
 
         private final LocalDateTime createdAt;
@@ -55,4 +66,5 @@ import java.time.LocalDateTime;
         }
 
     }
+
 
