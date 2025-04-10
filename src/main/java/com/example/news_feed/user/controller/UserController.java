@@ -21,13 +21,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(
             @PathVariable Long id,
-            @SessionAttribute(name = "user") String loginEmail) {
+            @SessionAttribute(name = "user") String loginEmail
+    ){
         UserResponseDto userResponseDto = userService.findById(id);
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK); // 조회 성공시 200
     }
 
-    // 프로필 중 이름 수정 PATCH api/users/{id}
-    @PatchMapping("/{id}")
+    // 프로필 중 이름 수정 PATCH api/users/{id}/name
+    @PatchMapping("/{id}/name")
     public ResponseEntity<String> updateName(
             @PathVariable Long id,
             @SessionAttribute(name = "user") String loginEmail,
@@ -37,8 +38,8 @@ public class UserController {
         return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK);
     }
 
-    // 프로필 중 비번 수정 PATCH api/users/{id}
-    @PatchMapping("/{id}")
+    // 프로필 중 비번 수정 PATCH api/users/{id}/password
+    @PatchMapping("/{id}/password")
     public ResponseEntity<String> updatePassword(
             @PathVariable Long id,
             @SessionAttribute(name = "user") String loginEmail,
