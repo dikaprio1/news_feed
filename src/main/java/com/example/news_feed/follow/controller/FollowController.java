@@ -27,7 +27,6 @@ public class FollowController {
 
 
     // Follower(나를 팔로잉하는 사람들) 목록 조회
-
     @GetMapping("/followers")
     public ResponseEntity<List<FollowerResponseDto>> findFollowers(@SessionAttribute(name = "user") String loginEmail) {
         List<FollowerResponseDto> followerResponseDto = followservice.findFollowers(loginEmail);
@@ -46,5 +45,8 @@ public class FollowController {
         followservice.deleteFollow(followRequestDto, loginEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // followResponsedto 만들어놓기
+    // 팔로우에 대한 응답을 만들어놓고 언젠간 쓸 수도 있다..
 
 }

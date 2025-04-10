@@ -31,6 +31,9 @@ public class FollowServiceImpl implements FollowService{
 
         // controller부분에서@SessionAttribute(name = "key") String loginEmail 설정하면 서비스에서 받아올 필요 없음
 
+
+        // getLoginUser에다가 로그인안되어있을때 예외 처리
+
         // 맨 처음에 requestdto의 email과 세션에 있는 email을 비교하는 유효성 검증.
         if (followRequestDto.getEmail().equals(loginEmail))
              {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자기 자신을 팔로우할 수는 없습니다.");}
@@ -103,6 +106,8 @@ public class FollowServiceImpl implements FollowService{
         // myId를 followingId라고 세팅하고, 대응하는 followerId를 List로 가져오기
         // sql 쿼리 결과를 조회해서 받아오는 식이기 때문에 List로 받아올 수 있음.
         List<Follow> followerIdList = followRepository.findByFollowingId(me);
+        // 유효성 검사 진행할 수 있으면 좋음
+
 
         // 이메일을 담을 DTO 리스트 생성
         // id에 맞는 email을 각각 뽑아와서 리스트로 넣어야 하니, sql 쿼리 조회 결과를 하나씩 리스트에 넣는 느낌
@@ -124,6 +129,8 @@ public class FollowServiceImpl implements FollowService{
             //  EmailList에 add
             followerEmailList.add(new FollowerResponseDto(followerEmail));
         }
+
+
 
         return followerEmailList;
     }
@@ -160,5 +167,4 @@ public class FollowServiceImpl implements FollowService{
     }
     // 나중에 친구 게시물 보기 등의 기능 또한 고려...
     // private final BoardRepository boardRepository;
-
 }
