@@ -12,6 +12,7 @@ import com.example.news_feed.follow.repository.FollowRepository;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class FollowService {
                 .map(user -> new FollowingResponseDto(user.getName()))
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public FollowResponseDto unfollowUser(Long id, HttpSession session) {
         User loginUser = authService.getLoginUser(session);
         Optional<User> optionalFindByIdUser = userRepository.findById(id);
