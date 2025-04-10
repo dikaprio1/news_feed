@@ -38,24 +38,16 @@ public class BoardServiceImpl implements BoardService {
         }
 
         if (boardRequestDto.getTitle() == null || boardRequestDto.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "제목은 필수입니다"); // 제목이 null 일경우, 400 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "제목은 필수입니다"); // 제목이 null or 공백일경우, 400 반환
         }
 
         if (boardRequestDto.getContent() == null || boardRequestDto.getContent().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용은 필수입니다"); // 내용이 null 일경우 ,400 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용은 필수입니다"); // 내용이 null or 공백일경우 ,400 반환
         }
 
 
-        User finduser = userRepository.findByEmail(email)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"이메일을 찾을수없습니다")); // DB에 이메일이 없을경우 , 404 반환
-
-
+        User finduser = userRepository.findByEmailOrElseThrow(email); // 로그인시점 조회
         board.setUser(finduser);
-
-        if (finduser.getName() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"작성자 이름이 존재하지 않습니다"); // author(작성자)가 null 일경우 400 반환
-        }
-
         boardRepository.save(board); // 엔티티 저장
 
 
@@ -72,12 +64,12 @@ public class BoardServiceImpl implements BoardService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다"); // 로그인을안했을경우 , 401 반환
         }
 
-        if (!email.equals(requestDto.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "로그인된 유저와 이메일이 일치하지 않습니다"); // 세션이메일과 바디의이메일이 다를경우 , 403 반환
-        }
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
+
+        if (!email.equals(requestDto.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이메일이 일치하지 않습니다"); // 이메일이 다른경우 , 403 반환
+        }
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // password가 다른경우 , 401 반환
