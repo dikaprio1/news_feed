@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController //
-@RequestMapping("/follow") // API 매핑 정하기
+@RequestMapping("/api/follow") // API 매핑 정하기
 @RequiredArgsConstructor // 생성자 자동 생성
 public class FollowController {
 
