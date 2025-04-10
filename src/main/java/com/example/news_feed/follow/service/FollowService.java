@@ -21,17 +21,25 @@ public class FollowService {
     private final UserRepository userRepository;
 
     public FollowResponseDto followUser(Long id, HttpSession session){
-        Optional<User> findBySessionUser = userRepository.findByEmail((String) session.getAttribute("user"));
-        Optional<User> findByIdUser = userRepository.findById(id);
-        if(findBySessionUser.isEmpty()){
-            throw new UserNotFoundException("로그인이 필요합니다.");
+        Optional<User> optionalFindBySessionUser = userRepository.findByEmail((String) session.getAttribute("user"));
+        Optional<User> optionalFindByIdUser = userRepository.findById(id);
+        if(optionalFindBySessionUser.isEmpty()){
+            throw new UserNotFoundException("로그인 정보를 불러올 수 업습니다. 로그인이 필요합니다.");
         }
-        if(findByIdUser.isEmpty()){
+        if(optionalFindByIdUser.isEmpty()){
             throw new UserNotFoundException("팔로우 대상을 찾을 수 없습니다.");
         }
-        Follow follow = new Follow();
-        follow.setFollower(findBySessionUser.get());
-        follow.setFollowing(findByIdUser.get());
+        User findBySessionUser = optionalFindBySessionUser.get();
+        User findByIdUser = optionalFindByIdUser.get();
+        if (findBySessionUser.equals(findByIdUser)) {
+            throw new IllegalArgumentException("자기 자신은 팔로우할 수 없습니다.");
+        }
+        boolean exists = followRepository.existsByFollowerIdAndFollowingId(findBySessionUser.getId(), findByIdUser.getId());
+        if (exists) {
+            throw new IllegalStateException("이미 팔로우한 사용자입니다.");
+        }
+
+        Follow follow = new Follow(findBySessionUser,findByIdUser);
 
         followRepository.save(follow);
 

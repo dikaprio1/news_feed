@@ -10,9 +10,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Entity
-@Table(name = "follow")
+@Table(name = "follow", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"follower", "following"})
+})
 @EntityListeners(AuditingEntityListener.class)
 public class Follow {
     @Id
@@ -32,4 +33,9 @@ public class Follow {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    public Follow(User follower,User following){
+        this.follower=follower;
+        this.following=following;
+    }
 }
