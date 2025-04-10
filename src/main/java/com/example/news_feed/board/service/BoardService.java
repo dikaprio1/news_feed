@@ -2,9 +2,21 @@ package com.example.news_feed.board.service;
 
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
-import org.springframework.stereotype.Service;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
-@Service
+import java.util.List;
+
 public interface BoardService {
-    BoardResponseDto createPosts(BoardRequestDto boardRequestDto);
+
+
+    // 게시물 조회
+    BoardResponseDto findById(Long id);
+
+    List<BoardResponseDto> getAll();
+
+
+    @Transactional
+    void update(Long id, BoardRequestDto boardRequestDto, HttpSession session);
+
 }
