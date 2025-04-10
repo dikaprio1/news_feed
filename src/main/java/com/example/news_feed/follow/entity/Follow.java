@@ -4,6 +4,7 @@ import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,9 +27,11 @@ public class Follow {
 
     private LocalDateTime createdAt;
 
+    // createdAt을 생성자에 now로 선언해줌으로써 생성시간을 표현해줌
     public Follow(Long myId, Long followId) {
         this.followerId = new User(myId);
         this.followingId = new User(followId);
+        this.createdAt = LocalDateTime.now();
     }
 
     public Follow() {

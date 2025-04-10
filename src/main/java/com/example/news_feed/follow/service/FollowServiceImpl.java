@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,6 @@ public class FollowServiceImpl implements FollowService{
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
-
 
     // Follow 하기
     @Override
@@ -64,7 +64,6 @@ public class FollowServiceImpl implements FollowService{
         }
     }
 
-
     // Follow 취소
     @Override
     public void deleteFollow(FollowRequestDto followRequestDto, String loginEmail) {
@@ -92,10 +91,7 @@ public class FollowServiceImpl implements FollowService{
             followRepository.delete(follow);
         }
     }
-
-
-
-
+    
     // Follower(나를 팔로잉하는 사람들) 목록 조회
     @Override
     public List<FollowerResponseDto> findFollowers(String loginEmail) {
@@ -123,7 +119,6 @@ public class FollowServiceImpl implements FollowService{
             //  EmailList에 add
             followerEmailList.add(new FollowerResponseDto(followerEmail));
         }
-
 
         return followerEmailList;
     }
@@ -157,17 +152,7 @@ public class FollowServiceImpl implements FollowService{
         return followingEmailList;
 
     }
-
-
-    //
-
-
-
-
-
     // 나중에 친구 게시물 보기 등의 기능 또한 고려...
     // private final BoardRepository boardRepository;
-
-
 
 }
