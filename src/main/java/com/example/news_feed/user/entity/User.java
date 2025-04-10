@@ -45,4 +45,7 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.age = age;
     }
+    public User(String name) {
+        this.name = name;
+    }
 }

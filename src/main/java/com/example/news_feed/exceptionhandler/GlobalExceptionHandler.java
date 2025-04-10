@@ -14,6 +14,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    // 팔로워를 찾을 수 없을 때 (예: ID가 없는 경우)
+    @ExceptionHandler(FollowerNotFoundException.class)
+    public ResponseEntity<String> handleFollowerNotFoundException(FollowerNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    // 팔로잉을 찾을 수 없을 때 (예: ID가 없는 경우)
+    @ExceptionHandler(FollowingNotFoundException.class)
+    public ResponseEntity<String> handleFollowingNotFoundException(FollowingNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
     // 모든 예외 처리 (예상하지 못한 오류)
     @ExceptionHandler(Exception.class)

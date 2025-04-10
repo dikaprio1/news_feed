@@ -23,19 +23,24 @@ public class Follow {
     @ManyToOne
     @JoinColumn(referencedColumnName ="user_id", name = "follower", nullable = false)
     // 한 명의 유저를 여러명이 팔로우 할 수 있다....
-    private User follower;
+    private User followerId;
 
     @ManyToOne
     @JoinColumn(referencedColumnName ="user_id", name = "following", nullable = false)
     // 한 명의 유저가 여러 아이디를 팔로우할 수 있다?
-    private User following;
+    private User followingId;
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public Follow(User follower,User following){
-        this.follower=follower;
-        this.following=following;
+    public Follow() {
+
     }
+
+    public Follow(User followerId,User followingId){
+        this.followerId=followerId;
+        this.followingId=followingId;
+    }
+
 }
