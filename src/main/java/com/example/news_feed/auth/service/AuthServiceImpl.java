@@ -3,6 +3,7 @@ package com.example.news_feed.auth.service;
 import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 import com.example.news_feed.config.PasswordEncoder;
+import com.example.news_feed.exceptionhandler.UserNotFoundException;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -55,9 +57,22 @@ public class AuthServiceImpl implements AuthService {
                 HttpSession session = request.getSession();
                 session.setAttribute("user",user.getEmail());
             }
+
         }
+        User user = findUser.get();
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("user",user.getEmail());
+        return "로그인에 성공했습니다.";
+    }
+
+    public User getLoginUser(String loginEmail) {
+        return userRepository.findByEmail(loginEmail)
+                .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }
 
 
-
 }
+

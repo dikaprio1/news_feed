@@ -33,8 +33,10 @@ public class AuthController {
     // 로그인 POST /api/auth/login
     @PostMapping("/login")
     public ResponseEntity<String> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
+
         authService.login(requestDto,request);
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK); // 로그인 성공시 200
+
     }
 
 }
