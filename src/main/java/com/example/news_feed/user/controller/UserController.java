@@ -53,9 +53,9 @@ public class UserController {
     @DeleteMapping("/{id}")
     private ResponseEntity<DeleteResponseDto> delete(
             @PathVariable Long id,
-            //@SessionAttribute(name = "user") String loginEmail,
+            @SessionAttribute(name = "user") String loginEmail,
             @Valid @RequestBody DeleteRequestDto requestDto) {
-        DeleteResponseDto deleteDate = userService.delete(id, requestDto);
+        DeleteResponseDto deleteDate = userService.delete(id, requestDto, loginEmail);
         return new ResponseEntity<>(deleteDate, HttpStatus.OK); // 삭제 성공시 200
     }
 

@@ -4,6 +4,7 @@ import com.example.news_feed.config.PasswordEncoder;
 import com.example.news_feed.user.dto.*;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,8 +75,13 @@ public class UserServiceImpl implements UserService {
     //회원탈퇴
     @Transactional
     @Override
-    public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto) {
-        User findUser = userRepository.findByIdOrElseThrow(id);
+    public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String sessionEmail) {
+
+        User findUser = userRepository.findByIdOrElseThrow(id); // 탈퇴 대상 유저 조회
+
+        if (!findUser.getEmail().equals(sessionEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
+        }
 
         if (!findUser.getEmail().equals(requestDto.getEmail())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디가 일치하지 않습니다"); // 아이디 불일치 401 반환
