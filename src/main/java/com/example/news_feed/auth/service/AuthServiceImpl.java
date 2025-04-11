@@ -50,22 +50,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void login(LoginRequestDto requestDto, HttpServletRequest request) {
-        Optional<User> finduser = userRepository.findByEmail(requestDto.getEmail()); // 나중에 리팩토링 고민
-        if(finduser.isPresent()){
-            User user = finduser.get();
+        Optional<User> findUser = userRepository.findByEmail(requestDto.getEmail()); // 나중에 리팩토링 고민
+        if(findUser.isPresent()){
+            User user = findUser.get();
             if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
                 session.setAttribute("user",user.getEmail());
+            }else{
+                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
             }
-
         }
-        User user = findUser.get();
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
-        }
-        HttpSession session = request.getSession();
-        session.setAttribute("user",user.getEmail());
-        return "로그인에 성공했습니다.";
     }
 
     public User getLoginUser(HttpSession session) {

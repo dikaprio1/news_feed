@@ -10,8 +10,6 @@ import com.example.news_feed.config.PasswordEncoder;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
-import com.example.news_feed.user.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +20,7 @@ import java.util.List;
 
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,18 +40,17 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("게시물이 존재하지 않습니다")
         );
-        return new BoardResponseDto(board); //조회한 Board엔티티를 클라이언트에게 보여주기위한 응답DTO로 변환
+        return new BoardResponseDto(board.getId(),board.getTitle(),board.getContent(),board.getImageUrl(),board.getUser().getName()); //조회한 Board엔티티를 클라이언트에게 보여주기위한 응답DTO로 변환
     }
 
 
     // 게시물목록 조회
     @Override
     public List<BoardResponseDto> getAll() {
-
         List<Board> boardList = boardRepository.findAll(); //모든게시글을 DB에서 다 꺼내옴, 리턴타입은 List<Board> -> 엔티티리스트
         List<BoardResponseDto> responseDtoList = new ArrayList<>(); //클라이언트에게 보낼 응답용 DTO리스트를 만들기위한 빈 리스트
         for(Board board : boardList) {
-            BoardResponseDto boardResponseDto = new BoardResponseDto(board);
+            BoardResponseDto boardResponseDto = new BoardResponseDto(board.getId(),board.getTitle(),board.getContent(),board.getImageUrl(),board.getUser().getName());
             responseDtoList.add(boardResponseDto);
         } //엔티티를 하나씩 순회하면서 BoardResponseDto로 변환 -> 변환된 리스트는 응답리스트에 추가됨
         return responseDtoList; //최종적으로 클라이언트에게 게시글 전체 목록을 응답함
@@ -80,7 +78,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
-        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getContent(), boardRequestDto.getImage());
+        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getContent(), boardRequestDto.getImageUrl());
         String email = (String) session.getAttribute("user");
 
         if (email == null) {
@@ -96,15 +94,17 @@ public class BoardServiceImpl implements BoardService {
         }
 
 
-        User finduser = userRepository.findByEmailOrElseThrow(email); // 로그인시점 조회
-        board.setUser(finduser);
-        boardRepository.save(board); // 엔티티 저장
+        User finduser = userRepository.findByEmailOrElseThrow(email); // 로그인 유저정보 조회
+        Board saveboard = new Board(boardRequestDto.getTitle(),boardRequestDto.getContent(),boardRequestDto.getImageUrl(),finduser);
+        boardRepository.save(saveboard); // 엔티티 저장
 
 
-        return new BoardResponseDto(board.getTitle(),
-                finduser.getName(),
-                board.getContent(),
-                board.getImage());
+        return new BoardResponseDto(
+                saveboard.getId(),
+                saveboard.getTitle(),
+                saveboard.getContent(),
+                saveboard.getImageUrl(),
+                finduser.getName());
     }
 
     @Override

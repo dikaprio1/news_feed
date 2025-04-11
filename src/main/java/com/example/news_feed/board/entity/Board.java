@@ -4,9 +4,7 @@ import com.example.news_feed.baseentity.BaseEntity;
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,7 +21,8 @@ public class Board extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
-    private String image;
+
+    private String imageUrl;
 
     //유저 참조
     @ManyToOne
@@ -31,27 +30,27 @@ public class Board extends BaseEntity {
     private User user;
 
 
-
-    private LocalDateTime deletedAt;
-    private LocalDateTime modifiedAt;
-    private LocalDateTime createdAt;
-    private String imageUrl;
-
     //게시글 수정시 사용할 메서드
     //BoardRequestDto에서 받은값으로 내부필드(title,content)를 업데이트함
     public void update(BoardRequestDto boardRequestDto) {
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
+        this.imageUrl = boardRequestDto.getImageUrl();
     }
 
     public Board(){
-
     }
 
-    public Board(String title, String content,String image){
+    public Board(String title, String content,String imageUrl){
         this.title = title;
         this.content = content;
-        this.image = image;
+        this.imageUrl = imageUrl;
+    }
+    public Board(String title, String content,String imageUrl,User user){
+        this.title = title;
+        this.content = content;
+        this.imageUrl = imageUrl;
+        this.user = user;
     }
 }
 

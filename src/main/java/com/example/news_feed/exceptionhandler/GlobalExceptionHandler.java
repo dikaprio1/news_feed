@@ -26,6 +26,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생: " + ex.getMessage());
     }
-
-
 }

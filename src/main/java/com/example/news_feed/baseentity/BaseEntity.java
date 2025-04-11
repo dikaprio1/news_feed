@@ -25,9 +25,7 @@ public abstract class BaseEntity {
     private LocalDateTime deletedAt;
 
 
-    private String getImageUrl;
-
-    public void saveDeleteTime(LocalDateTime deletedAt) {
+    public void setDeleteTime(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 }

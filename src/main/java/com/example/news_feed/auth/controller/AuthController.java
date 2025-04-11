@@ -35,7 +35,6 @@ public class AuthController {
     public ResponseEntity<String> login( @Valid @RequestBody LoginRequestDto requestDto, HttpServletRequest request){
         authService.login(requestDto,request);
         return new ResponseEntity<>("로그인 성공", HttpStatus.OK); // 로그인 성공시 200
-
     }
 
 }

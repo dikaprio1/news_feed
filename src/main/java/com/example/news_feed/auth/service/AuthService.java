@@ -8,6 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
     void signup(SignupRequestDto requestDto);
 
-    String login(LoginRequestDto requestDto, HttpServletRequest request);
+    void login(LoginRequestDto requestDto, HttpServletRequest request);
 
 }
