@@ -11,11 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.news_feed.board.service.BoardServiceImpl;
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -59,7 +54,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<BoardResponseDto> findById(@PathVariable Long id) {
         BoardResponseDto responseDto = boardService.findById(id);
-        return ResponseEntity.ok(responseDto);
+        return new ResponseEntity<>(responseDto,HttpStatus.OK);
     }
 
 
