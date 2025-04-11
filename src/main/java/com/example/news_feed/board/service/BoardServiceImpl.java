@@ -7,6 +7,10 @@ import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
 import com.example.news_feed.config.PasswordEncoder;
+import com.example.news_feed.exceptionhandler.BoardBadRequestException;
+import com.example.news_feed.exceptionhandler.BoardForbiddenException;
+import com.example.news_feed.exceptionhandler.BoardNotFoundException;
+import com.example.news_feed.exceptionhandler.BoardUnauthorizedException;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +24,6 @@ import java.util.List;
 
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,23 +81,22 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
-        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getContent(), boardRequestDto.getImageUrl());
-        String email = (String) session.getAttribute("user");
+        Long userId = (Long) session.getAttribute("user");
 
-        if (email == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"로그인이 필요합니다"); // 로그인을안했을경우 , 401 반환
+        if (userId == null) {
+            throw new BoardUnauthorizedException("로그인이 필요합니다");
         }
 
         if (boardRequestDto.getTitle() == null || boardRequestDto.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "제목은 필수입니다"); // 제목이 null or 공백일경우, 400 반환
+            throw new BoardBadRequestException("제목은 필수입니다"); // 제목이 null or 공백일경우, 400 반환
         }
 
         if (boardRequestDto.getContent() == null || boardRequestDto.getContent().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용은 필수입니다"); // 내용이 null or 공백일경우 ,400 반환
+            throw new BoardBadRequestException("내용은 필수입니다"); // 내용이 null or 공백일경우 ,400 반환
         }
 
 
-        User finduser = userRepository.findByEmailOrElseThrow(email); // 로그인 유저정보 조회
+        User finduser = userRepository.findByIdOrElseThrow(userId); // 로그인 유저정보 조회
         Board saveboard = new Board(boardRequestDto.getTitle(),boardRequestDto.getContent(),boardRequestDto.getImageUrl(),finduser);
         boardRepository.save(saveboard); // 엔티티 저장
 
@@ -109,28 +111,27 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public DeleteResponseDto deletePost (Long id, DeletePostRequestDto requestDto, HttpSession session){
-        String email = (String) session.getAttribute("user");
-        if (email == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다"); // 로그인을안했을경우 , 401 반환
+        Long userId = (Long) session.getAttribute("user");
+        if (userId == null) {
+            throw new BoardUnauthorizedException("로그인이 필요합니다"); // 로그인을안했을경우 , 401 반환
         }
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BoardNotFoundException("유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
 
-        if (!email.equals(requestDto.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이메일이 일치하지 않습니다"); // 이메일이 다른경우 , 403 반환
+        if (!userId.equals(requestDto.getEmail())) {
+            throw new BoardForbiddenException("이메일이 일치하지 않습니다"); // 이메일이 다른경우 , 403 반환
         }
 
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // password가 다른경우 , 401 반환
+            throw new BoardUnauthorizedException("비밀번호가 일치하지 않습니다"); // password가 다른경우 , 401 반환
         }
 
        Board board = boardRepository.findById(id) // 삭제할 게시물 조회
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
+                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
 
-        if (board.getUser() == null || board.getUser().getEmail() == null ||
-                !board.getUser().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 삭제 권한이 없습니다"); // 작성자 본인만 삭제할수있게 , 403 반환
+        if (board.getUser() == null || board.getUser().getEmail() == null || !board.getUser().getEmail().equals(userId)) {
+            throw new BoardForbiddenException("게시글 삭제 권한이 없습니다"); // 작성자 본인만 삭제할수있게 , 403 반환
         }
 
 

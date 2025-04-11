@@ -6,9 +6,6 @@ import com.example.news_feed.board.dto.DeleteResponseDto;
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import jakarta.servlet.http.HttpSession;
-import com.example.news_feed.board.dto.BoardRequestDto;
-import com.example.news_feed.board.dto.BoardResponseDto;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
