@@ -90,9 +90,10 @@ public class UserServiceImpl implements UserService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        findUser.saveDeleteTime(now);
+        findUser.setDeleteTime(now);
         return new DeleteResponseDto(findUser.getDeletedAt(), "회원탈퇴 성공");
     }
 
 
 }
+
