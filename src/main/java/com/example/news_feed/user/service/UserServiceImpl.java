@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
         if (findUser.getDeletedAt() != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"이미 탈퇴한 회원입니다"); //400
         }
+
         return new UserResponseDto(findUser.getName(), findUser.getEmail(), findUser.getGender(), findUser.getAge());
     }
 
@@ -40,6 +41,10 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder.matches(requestDto.getOldPassword(), findUser.getPassword())) { // 비번체크
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // 401 반환
+        }
+
+        if (!requestDto.getUsername().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이름을 입력해주세요"); // 변경할 이름 공란일 시 400 반환
         }
 
         if (requestDto.getUsername().equals(findUser.getName())) {
