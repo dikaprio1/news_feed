@@ -36,11 +36,11 @@ public class UserServiceImpl implements UserService {
     //이름수정
     @Transactional
     @Override
-    public void updateName(Long id, updateNameRequestDto requestDto, String sessionEmail) {
+    public void updateName(Long id, updateNameRequestDto requestDto, String sessionId) {
 
         User findUser = userRepository.findByIdOrElseThrow(id); //id 체크
 
-        if (!findUser.getEmail().equals(sessionEmail)) {
+        if (!findUser.getEmail().equals(sessionId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
         }
 
@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
     //비번수정
     @Transactional
     @Override
-    public void updatePassword(Long id, updatePwRequestDto requestDto, String sessionEmail) {
+    public void updatePassword(Long id, updatePwRequestDto requestDto, String sessionId) {
 
         User findUser = userRepository.findByIdOrElseThrow(id); //id 체크
 
-        if (!findUser.getEmail().equals(sessionEmail)) {
+        if (!findUser.getEmail().equals(sessionId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
         }
 
@@ -83,11 +83,11 @@ public class UserServiceImpl implements UserService {
     //회원탈퇴
     @Transactional
     @Override
-    public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String sessionEmail) {
+    public DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String sessionId) {
 
         User findUser = userRepository.findByIdOrElseThrow(id); // 탈퇴 대상 유저 조회
 
-        if (!findUser.getEmail().equals(sessionEmail)) {
+        if (!findUser.getEmail().equals(sessionId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
         }
 

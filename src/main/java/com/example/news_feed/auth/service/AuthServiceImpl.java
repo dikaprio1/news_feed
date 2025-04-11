@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 
             if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
-                session.setAttribute("user",user.getEmail());
+                session.setAttribute("user",user.getId());
             }else{
                 throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
             }
