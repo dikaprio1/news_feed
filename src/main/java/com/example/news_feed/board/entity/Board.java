@@ -21,16 +21,6 @@ public class Board extends BaseEntity {
     private String title;
 
 
-    public Board(){
-
-    }
-
-    public Board(String title, String content,String image){
-        this.title = title;
-        this.content = content;
-        this.image = image;
-    }
-
     @Column(nullable = false)
     private String content;
     private String image;
@@ -40,6 +30,13 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+
+    private LocalDateTime deletedAt;
+    private LocalDateTime modifiedAt;
+    private LocalDateTime createdAt;
+    private String imageUrl;
+
     //게시글 수정시 사용할 메서드
     //BoardRequestDto에서 받은값으로 내부필드(title,content)를 업데이트함
     public void update(BoardRequestDto boardRequestDto) {
@@ -47,10 +44,15 @@ public class Board extends BaseEntity {
         this.content = boardRequestDto.getContent();
     }
 
-    private LocalDateTime deletedAt;
-    private LocalDateTime modifiedAt;
-    private LocalDateTime createdAt;
-    private String imageUrl;
+    public Board(){
+
+    }
+
+    public Board(String title, String content,String image){
+        this.title = title;
+        this.content = content;
+        this.image = image;
+    }
 }
 
 

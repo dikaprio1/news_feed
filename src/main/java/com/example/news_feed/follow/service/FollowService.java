@@ -9,6 +9,7 @@ import com.example.news_feed.follow.entity.Follow;
 import com.example.news_feed.follow.repository.FollowRepository;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,9 @@ public class FollowService {
     private final UserRepository userRepository;
     private final AuthServiceImpl authService;
 
-    public FollowResponseDto followUser(Long id, String loginEmail) {
+    public FollowResponseDto followUser(Long id, HttpSession session) {
         User FindByIdUser = userRepository.findByIdOrElseThrow(id);
-        User loginUser = authService.getLoginUser(loginEmail);
+        User loginUser = authService.getLoginUser(session);
         if (loginUser.equals(FindByIdUser)) {
             throw new IllegalArgumentException("자기 자신은 팔로우할 수 없습니다.");
         }
@@ -41,8 +42,8 @@ public class FollowService {
         return new FollowResponseDto(follow.getFollowerId().getName(), follow.getFollowingId().getName());
     }
 
-    public List<FollowerResponseDto> findFollowerList(String loginEmail) {
-        User loginUser = authService.getLoginUser(loginEmail);
+    public List<FollowerResponseDto> findFollowerList(HttpSession session) {
+        User loginUser = authService.getLoginUser(session);
         List<Follow> findByUserIdFollower = followRepository.findByFollowerId(loginUser);
         if (findByUserIdFollower.isEmpty()) {
             throw new FollowNotFoundException("팔로워 정보가 없습니다.");
@@ -55,8 +56,8 @@ public class FollowService {
 
     }
 
-    public List<FollowingResponseDto> findFollowingList(String loginEmail) {
-        User loginUser = authService.getLoginUser(loginEmail);
+    public List<FollowingResponseDto> findFollowingList(HttpSession session) {
+        User loginUser = authService.getLoginUser(session);
         List<Follow> findByUserIdFollowing = followRepository.findByFollowingId(loginUser);
         if (findByUserIdFollowing.isEmpty()) {
             throw new FollowNotFoundException("팔로잉 정보가 없습니다.");
@@ -67,8 +68,8 @@ public class FollowService {
                 .collect(Collectors.toList());
     }
     @Transactional
-    public FollowResponseDto unfollowUser(Long id, String loginEmail) {
-        User loginUser = authService.getLoginUser(loginEmail);
+    public FollowResponseDto unfollowUser(Long id, HttpSession session) {
+        User loginUser = authService.getLoginUser(session);
         User FindByIdUser = userRepository.findByIdOrElseThrow(id);
         boolean exists = followRepository.existsByFollowerIdAndFollowingId(loginUser, FindByIdUser);
         if (!exists) {

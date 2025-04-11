@@ -68,7 +68,8 @@ public class AuthServiceImpl implements AuthService {
         return "로그인에 성공했습니다.";
     }
 
-    public User getLoginUser(String loginEmail) {
+    public User getLoginUser(HttpSession session) {
+        String loginEmail = (String) session.getAttribute("user");
         return userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }

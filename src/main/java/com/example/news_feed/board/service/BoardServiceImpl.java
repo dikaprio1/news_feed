@@ -80,9 +80,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
-        Board board = new Board(boardRequestDto.getTitle(),
-                boardRequestDto.getContent(),
-                boardRequestDto.getImage());
+        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getContent(), boardRequestDto.getImage());
         String email = (String) session.getAttribute("user");
 
         if (email == null) {
