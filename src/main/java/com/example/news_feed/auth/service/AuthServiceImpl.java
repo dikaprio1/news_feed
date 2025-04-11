@@ -49,10 +49,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginRequestDto requestDto, HttpServletRequest request) {
+    public void login(LoginRequestDto requestDto, HttpServletRequest request) { // 아디비번 틀려도 로그인 성공함
         Optional<User> findUser = userRepository.findByEmail(requestDto.getEmail()); // 나중에 리팩토링 고민
         if(findUser.isPresent()){
             User user = findUser.get();
+
+            if (!requestDto.getEmail().equals(user.getEmail())){
+                throw new IllegalArgumentException("아이디가 올바르지 않습니다");
+            }
+
             if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
                 session.setAttribute("user",user.getEmail());

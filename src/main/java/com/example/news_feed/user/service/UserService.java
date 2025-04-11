@@ -9,9 +9,9 @@ public interface UserService {
 
     DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String sessionEmail);
 
-    void updateName(Long id, updateNameRequestDto requestDto);
+    void updateName(Long id, updateNameRequestDto requestDto, String sessionEmail);
 
-    void updatePassword(Long id, updatePwRequestDto requestDto);
+    void updatePassword(Long id, updatePwRequestDto requestDto, String sessionEmail);
 
 }
 

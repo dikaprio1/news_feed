@@ -31,10 +31,10 @@ public class UserController {
     @PatchMapping("/{id}/name")
     public ResponseEntity<String> updateName(
             @PathVariable Long id,
-            //@SessionAttribute(name = "user") String loginEmail,
+            @SessionAttribute(name = "user") String loginEmail, //key값 id로 수정예정
             @Valid @RequestBody updateNameRequestDto requestDto
     ){
-        userService.updateName(id, requestDto);
+        userService.updateName(id, requestDto, loginEmail);
         return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK);
     }
 
@@ -42,10 +42,10 @@ public class UserController {
     @PatchMapping("/{id}/password")
     public ResponseEntity<String> updatePassword(
             @PathVariable Long id,
-            //@SessionAttribute(name = "user") String loginEmail,
+            @SessionAttribute(name = "user") String loginEmail,
             @Valid @RequestBody updatePwRequestDto requestDto
     ) {
-        userService.updatePassword(id, requestDto);
+        userService.updatePassword(id, requestDto, loginEmail);
         return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK); // 수정 성공시 200 + 메세지 "프로필 수정 완료"
     }
 

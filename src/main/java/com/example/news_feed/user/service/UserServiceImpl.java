@@ -36,9 +36,13 @@ public class UserServiceImpl implements UserService {
     //이름수정
     @Transactional
     @Override
-    public void updateName(Long id, updateNameRequestDto requestDto) {
+    public void updateName(Long id, updateNameRequestDto requestDto, String sessionEmail) {
 
         User findUser = userRepository.findByIdOrElseThrow(id); //id 체크
+
+        if (!findUser.getEmail().equals(sessionEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
+        }
 
         if (!passwordEncoder.matches(requestDto.getOldPassword(), findUser.getPassword())) { // 비번체크
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // 401 반환
@@ -58,9 +62,13 @@ public class UserServiceImpl implements UserService {
     //비번수정
     @Transactional
     @Override
-    public void updatePassword(Long id, updatePwRequestDto requestDto) {
+    public void updatePassword(Long id, updatePwRequestDto requestDto, String sessionEmail) {
 
         User findUser = userRepository.findByIdOrElseThrow(id); //id 체크
+
+        if (!findUser.getEmail().equals(sessionEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "본인 계정만 삭제할 수 있습니다."); // 로그인한 회원과 대상 유저 동일한지 확인
+        }
 
         if (!passwordEncoder.matches(requestDto.getOldPassword(), findUser.getPassword())) { // 비번체크
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // 401 반환
