@@ -7,10 +7,7 @@ import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
 import com.example.news_feed.config.PasswordEncoder;
-import com.example.news_feed.exceptionhandler.BoardBadRequestException;
-import com.example.news_feed.exceptionhandler.BoardForbiddenException;
-import com.example.news_feed.exceptionhandler.BoardNotFoundException;
-import com.example.news_feed.exceptionhandler.BoardUnauthorizedException;
+import com.example.news_feed.exceptionhandler.*;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -83,6 +80,7 @@ public class BoardServiceImpl implements BoardService {
     public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
         Long userId = (Long) session.getAttribute("user");
 
+
         if (userId == null) {
             throw new BoardUnauthorizedException("로그인이 필요합니다");
         }
@@ -117,22 +115,25 @@ public class BoardServiceImpl implements BoardService {
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BoardNotFoundException("유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
+                .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다")); // 유저를 찾지못한경우 , 404 반환
 
-        if (!userId.equals(requestDto.getEmail())) {
-            throw new BoardForbiddenException("이메일이 일치하지 않습니다"); // 이메일이 다른경우 , 403 반환
-        }
+        if (requestDto.getEmail() == null || requestDto.getEmail().isBlank() ||
+                !user.getEmail().equals(requestDto.getEmail())) {
+            throw new BoardForbiddenException("이메일이 일치하지 않습니다");
+        } // 이메일이 일치하지 않는경우 , 403 반환
 
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new BoardUnauthorizedException("비밀번호가 일치하지 않습니다"); // password가 다른경우 , 401 반환
-        }
+
+        if (requestDto.getPassword() == null || requestDto.getPassword().isBlank() ||
+                !passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new BoardUnauthorizedException("비밀번호가 일치하지 않습니다");
+        } // password가 다른경우 , 401 반환
 
        Board board = boardRepository.findById(id) // 삭제할 게시물 조회
                 .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
 
-        if (board.getUser() == null || board.getUser().getEmail() == null || !board.getUser().getEmail().equals(userId)) {
-            throw new BoardForbiddenException("게시글 삭제 권한이 없습니다"); // 작성자 본인만 삭제할수있게 , 403 반환
-        }
+        if (!board.getUser().getId().equals(userId)) {
+            throw new BoardForbiddenException("게시글 삭제 권한이 없습니다");
+        } // 작성자 본인만 삭제할수있게 , 403 반환
 
 
         boardRepository.delete(board); // 게시물 하드삭제
