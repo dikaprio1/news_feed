@@ -1,9 +1,6 @@
 package com.example.news_feed.board.service;
 
-import com.example.news_feed.board.dto.DeletePostRequestDto;
-import com.example.news_feed.board.dto.DeleteResponseDto;
-import com.example.news_feed.board.dto.BoardRequestDto;
-import com.example.news_feed.board.dto.BoardResponseDto;
+import com.example.news_feed.board.dto.*;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
 import com.example.news_feed.config.PasswordEncoder;
@@ -60,7 +57,7 @@ public class BoardServiceImpl implements BoardService {
     // 수정작업은 데이터가 변경되므로 트랜잭션이 꼭 필요, 로그인된 사용자 이메일 가져오려면 HttpSession 필요
     @Transactional
     @Override
-    public void update(Long id, BoardRequestDto boardRequestDto, HttpSession session) {
+    public void update(Long id, UpdateBoardRequestDto updateBoardRequestDto, HttpSession session) {
         String email = (String) session.getAttribute("user"); // 세션에서 "user"키로 저장된 email 값 꺼냄
 
         Board board = boardRepository.findById(id).orElseThrow(
@@ -68,10 +65,10 @@ public class BoardServiceImpl implements BoardService {
         ); // 수정할 게시물이 DB에 존재하는지 확인 -> 없으면 예외 발생시켜 수정 막음
         if (board.getUser() == null || board.getUser().getEmail() == null ||
                 !board.getUser().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 삭제 권한이 없습니다");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 수정 권한이 없습니다");
         } // 작성자 없거나, 이메일 없거나, 로그인 사용자와 이메일 일치하지않으면 403 예외
 
-        board.update(boardRequestDto); //Board 엔티티안에 정의된 update() 메서드 호출
+        board.update(updateBoardRequestDto); //Board 엔티티안에 정의된 update() 메서드 호출
     }
   
 

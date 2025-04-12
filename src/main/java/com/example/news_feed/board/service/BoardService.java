@@ -1,10 +1,7 @@
 package com.example.news_feed.board.service;
 
 
-import com.example.news_feed.board.dto.DeletePostRequestDto;
-import com.example.news_feed.board.dto.DeleteResponseDto;
-import com.example.news_feed.board.dto.BoardRequestDto;
-import com.example.news_feed.board.dto.BoardResponseDto;
+import com.example.news_feed.board.dto.*;
 import jakarta.servlet.http.HttpSession;
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
@@ -25,6 +22,6 @@ public interface BoardService {
 
 
     @Transactional
-    void update(Long id, BoardRequestDto boardRequestDto, HttpSession session);
+    void update(Long id, UpdateBoardRequestDto updateBoardRequestDto, HttpSession session);
 }
 
