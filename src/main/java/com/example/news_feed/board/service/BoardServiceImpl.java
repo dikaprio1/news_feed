@@ -127,13 +127,13 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     @Override
     public void update(Long id, UpdateBoardRequestDto updateBoardRequestDto, HttpSession session) {
-        String email = (String) session.getAttribute("user"); // 세션에서 "user"키로 저장된 email 값 꺼냄
+        Long email = (Long) session.getAttribute("user"); // 세션에서 "user"키로 저장된 email 값 꺼냄
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("게시물이 존재하지 않습니다")
         ); // 수정할 게시물이 DB에 존재하는지 확인 -> 없으면 예외 발생시켜 수정 막음
         if (board.getUser() == null || board.getUser().getEmail() == null ||
-                !board.getUser().getEmail().equals(email)) {
+                !board.getUser().getId().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "게시글 수정 권한이 없습니다");
         } // 작성자 없거나, 이메일 없거나, 로그인 사용자와 이메일 일치하지않으면 403 예외
 
