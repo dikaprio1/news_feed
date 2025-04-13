@@ -37,7 +37,7 @@
 
 
 ## 📝 ERD
-
+![뉴스피드 ERD.PNG](%EB%89%B4%EC%8A%A4%ED%94%BC%EB%93%9C%20ERD.PNG)
 
 
 #  📝 API 명세서
