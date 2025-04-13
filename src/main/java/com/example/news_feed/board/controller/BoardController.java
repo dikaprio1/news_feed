@@ -1,6 +1,9 @@
 package com.example.news_feed.board.controller;
 
 
+
+import com.example.news_feed.board.dto.*;
+
 import com.example.news_feed.board.dto.BoardCreatedResponseDto;
 import com.example.news_feed.board.dto.BoardNewsFeedResponseDto;
 import com.example.news_feed.board.dto.BoardRequestDto;
@@ -55,13 +58,18 @@ public class BoardController {
 
     // 뉴스피드 조회 [페이징]
     @GetMapping("/newsfeed")
-    public ResponseEntity<List<BoardNewsFeedResponseDto>> getNewsFeed(@PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, HttpSession session) {
+    public ResponseEntity<PageResponseDto> getNewsFeed(@PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, HttpSession session) {
 
         // 서비스에서 뉴스피드 데이터를 조회
         Page<BoardNewsFeedResponseDto> newsFeedPage = boardService.getNewsFeed(pageable, session);
 
+        PageResponseDto pageResponseDto = new PageResponseDto(
+                newsFeedPage.getContent(),
+                newsFeedPage.getTotalPages(),
+                newsFeedPage.getNumber()
+        );
         // 응답으로 뉴스피드 데이터와 200 처리
-        return new ResponseEntity<>(newsFeedPage.getContent(),HttpStatus.OK);
+        return new ResponseEntity<>(pageResponseDto,HttpStatus.OK);
     }
 
 
