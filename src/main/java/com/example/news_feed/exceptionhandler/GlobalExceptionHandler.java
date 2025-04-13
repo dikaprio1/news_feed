@@ -57,5 +57,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
+    // 사용자 입력 오류 400
+    @ExceptionHandler(InvalidUserInputException.class)
+    public ResponseEntity<String> handleInvalidUserInput(InvalidUserInputException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    // 본인 계정에만 접근 가능 403
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<String> handleUnauthorizedAccess(UnauthorizedAccessException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
+
 
 }
