@@ -1,9 +1,6 @@
 package com.example.news_feed.board.service;
 
-import com.example.news_feed.board.dto.DeletePostRequestDto;
-import com.example.news_feed.board.dto.DeleteResponseDto;
-import com.example.news_feed.board.dto.BoardRequestDto;
-import com.example.news_feed.board.dto.BoardResponseDto;
+import com.example.news_feed.board.dto.*;
 import com.example.news_feed.board.entity.Board;
 import com.example.news_feed.board.repository.BoardRepository;
 import com.example.news_feed.config.PasswordEncoder;
@@ -77,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public BoardResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
+    public BoardCreatedResponseDto createPosts(BoardRequestDto boardRequestDto, HttpSession session) {
         Long userId = (Long) session.getAttribute("user");
 
 
@@ -95,19 +92,21 @@ public class BoardServiceImpl implements BoardService {
 
 
         User finduser = userRepository.findByIdOrElseThrow(userId); // 로그인 유저정보 조회
-        Board saveboard = new Board(boardRequestDto.getTitle(),boardRequestDto.getContent(),boardRequestDto.getImageUrl(),finduser);
+        Board saveboard = new Board(boardRequestDto.getTitle(), boardRequestDto.getContent(), boardRequestDto.getImageUrl(), finduser);
         boardRepository.save(saveboard); // 엔티티 저장
 
 
-        return new BoardResponseDto(
+        return new BoardCreatedResponseDto(
                 saveboard.getId(),
                 saveboard.getTitle(),
                 saveboard.getContent(),
                 saveboard.getImageUrl(),
-                finduser.getName());
+                finduser.getName(),
+                saveboard.getCreatedAt()
+        );
     }
 
-    @Override
+        @Override
     public DeleteResponseDto deletePost (Long id, DeletePostRequestDto requestDto, HttpSession session){
         Long userId = (Long) session.getAttribute("user");
         if (userId == null) {
@@ -129,7 +128,7 @@ public class BoardServiceImpl implements BoardService {
         } // password가 다른경우 , 401 반환
 
        Board board = boardRepository.findById(id) // 삭제할 게시물 조회
-                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다. " + id)); // 게시물이 없을경우, 404 반환
+                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다. id : " + id)); // 게시물이 없을경우, 404 반환
 
         if (!board.getUser().getId().equals(userId)) {
             throw new BoardForbiddenException("게시글 삭제 권한이 없습니다");

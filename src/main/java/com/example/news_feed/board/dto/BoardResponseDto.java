@@ -2,10 +2,8 @@ package com.example.news_feed.board.dto;
 
 
 
-import com.example.news_feed.user.entity.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import com.example.news_feed.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +26,6 @@ import java.time.LocalDateTime;
         private final String imageUrl;
         @NotNull
         private final String username;
-
 
 //         전체필드를 초기화하는 생성자
 //         모든필드를 매개변수로 받아서 초기화하는 생성자
