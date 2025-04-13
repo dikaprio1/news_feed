@@ -38,6 +38,9 @@
 
 ## 📝 ERD
 
+![image](https://github.com/user-attachments/assets/e28fbe8f-c6e8-4f32-8cb4-8e87effe5a5c)
+
+
 
 
 #  📝 API 명세서
