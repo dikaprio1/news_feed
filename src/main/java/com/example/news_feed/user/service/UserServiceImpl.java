@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (passwordEncoder.matches(requestDto.getNewPassword(), findUser.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "현재 비밀번호와 동일합니다"); // 401 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "현재 비밀번호와 동일합니다"); // 400 반환
             }
             findUser.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
     }
@@ -92,15 +92,15 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!findUser.getEmail().equals(requestDto.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디가 일치하지 않습니다"); // 아이디 불일치 401 반환
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다"); // 아이디 불일치 401 반환
         }
 
         if (!passwordEncoder.matches(requestDto.getPassword(), findUser.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다"); // 비번 불일치 401 반환
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다"); // 비번 불일치 401 반환
         }
 
         if (findUser.getDeletedAt() != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT); // 이미 탈퇴한 회원 409 반환
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND); // 이미 탈퇴한 회원 404 반환
         }
 
         LocalDateTime now = LocalDateTime.now();
