@@ -53,8 +53,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생: " + ex.getMessage());
     }
 
-
-
     // 유저를 찾을수 없을때
     @ExceptionHandler(BoardNotFoundException.class)
     public ResponseEntity<String> handleBoardNotFoundException(BoardNotFoundException ex) {
@@ -79,29 +77,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-   // 유저를 찾을수 없을때
-    @ExceptionHandler(BoardNotFoundException.class)
-    public ResponseEntity<String> handleBoardNotFoundException(BoardNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    // 로그인이 안됐을경우
-    @ExceptionHandler(BoardUnauthorizedException.class)
-    public ResponseEntity<String> BoardUnauthorizedException(BoardUnauthorizedException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
-    }
-
-    // 제목이나 내용이 공백이거나 null일경우
-    @ExceptionHandler(BoardBadRequestException.class)
-    public ResponseEntity<String> BoardBadRequestException(BoardBadRequestException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
-    // 이메일이나 비밀번호가 일치않을경우
-    @ExceptionHandler(BoardForbiddenException.class)
-    public ResponseEntity<String> BoardForbiddenException(BoardForbiddenException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-      
     // @Valid 관련 오류 처리 -> 메세지만 띄움
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {

@@ -116,7 +116,7 @@ public class BoardServiceImpl implements BoardService {
                 board.getContent(),
                 board.getImageUrl(),
                 board.getUser().getName(),
-                board.getCreateAt(),
+                board.getCreatedAt(),
                 board.getModifiedAt()
         ));
 

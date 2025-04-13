@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 
 
         // 생성일 추가를 위해 responsedto 새로 생성
-        private final LocalDateTime createAt;
+        private final LocalDateTime createdAt;
 
         private final LocalDateTime modifiedAt;
 
