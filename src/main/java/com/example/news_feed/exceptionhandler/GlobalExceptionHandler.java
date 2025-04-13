@@ -18,6 +18,19 @@ public class GlobalExceptionHandler {
     // 팔로우를 찾을 수 없을 때
     @ExceptionHandler(FollowNotFoundException.class)
     public ResponseEntity<String> handleFollowerNotFoundException(FollowNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    // 자기 자신을 팔로우 하려 할 때
+    @ExceptionHandler(FollowNotFoundException.class)
+    public ResponseEntity<String> handleFollowerNotFoundException(FollowMySelfException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+
+    // 팔로우를 찾을 수 없을 때
+    @ExceptionHandler(FollowNotFoundException.class)
+    public ResponseEntity<String> handleFollowerNotFoundException(AlreadyFollowerException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

@@ -66,7 +66,5 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.findByEmail(loginEmail)
                 .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }
-
-
 }
 

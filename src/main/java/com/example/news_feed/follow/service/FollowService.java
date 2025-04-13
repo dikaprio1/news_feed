@@ -1,6 +1,8 @@
 package com.example.news_feed.follow.service;
 
 import com.example.news_feed.auth.service.AuthServiceImpl;
+import com.example.news_feed.exceptionhandler.AlreadyFollowerException;
+import com.example.news_feed.exceptionhandler.FollowMySelfException;
 import com.example.news_feed.exceptionhandler.FollowNotFoundException;
 import com.example.news_feed.follow.dto.FollowResponseDto;
 import com.example.news_feed.follow.dto.FollowerResponseDto;
@@ -28,11 +30,11 @@ public class FollowService {
         User FindByIdUser = userRepository.findByIdOrElseThrow(id);
         User loginUser = authService.getLoginUser(session);
         if (loginUser.equals(FindByIdUser)) {
-            throw new IllegalArgumentException("자기 자신은 팔로우할 수 없습니다.");
+            throw new FollowMySelfException("자기 자신은 팔로우할 수 없습니다.");
         }
         boolean exists = followRepository.existsByFollowerIdAndFollowingId(loginUser, FindByIdUser);
         if (exists) {
-            throw new IllegalStateException("이미 팔로우한 사용자입니다.");
+            throw new AlreadyFollowerException("이미 팔로우한 사용자입니다.");
         }
 
         Follow follow = new Follow(loginUser, FindByIdUser);
