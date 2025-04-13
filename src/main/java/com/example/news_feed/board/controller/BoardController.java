@@ -53,13 +53,13 @@ public class BoardController {
 
     // 뉴스피드 조회 [페이징]
     @GetMapping("/newsfeed")
-    public ResponseEntity<Page<BoardNewsFeedResponseDto>> getNewsFeed(@PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, HttpSession session) {
+    public ResponseEntity<List<BoardNewsFeedResponseDto>> getNewsFeed(@PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, HttpSession session) {
 
         // 서비스에서 뉴스피드 데이터를 조회
         Page<BoardNewsFeedResponseDto> newsFeedPage = boardService.getNewsFeed(pageable, session);
 
         // 응답으로 뉴스피드 데이터와 200 처리
-        return new ResponseEntity<>(newsFeedPage,HttpStatus.OK);
+        return new ResponseEntity<>(newsFeedPage.getContent(),HttpStatus.OK);
     }
 
 
