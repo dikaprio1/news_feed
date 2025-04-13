@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 
             if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
-                session.setAttribute("user",user.getEmail());
+                session.setAttribute("user",user.getId());
             }else{
                 throw new InvalidLoginException("아이디 또는 비밀번호가 올바르지 않습니다"); //401
             }
@@ -64,8 +64,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public User getLoginUser(HttpSession session) {
-        String loginEmail = (String) session.getAttribute("user");
-        return userRepository.findByEmail(loginEmail)
+        Long loginEmail = (Long) session.getAttribute("user");
+        return userRepository.findById(loginEmail)
                 .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }
 
