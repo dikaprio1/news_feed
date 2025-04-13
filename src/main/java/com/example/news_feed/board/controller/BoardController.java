@@ -1,7 +1,15 @@
 package com.example.news_feed.board.controller;
 
 
+
 import com.example.news_feed.board.dto.*;
+
+import com.example.news_feed.board.dto.BoardCreatedResponseDto;
+import com.example.news_feed.board.dto.BoardNewsFeedResponseDto;
+import com.example.news_feed.board.dto.BoardRequestDto;
+import com.example.news_feed.board.dto.BoardResponseDto;
+import com.example.news_feed.board.dto.DeletePostRequestDto;
+import com.example.news_feed.board.dto.UpdateBoardRequestDto;
 import com.example.news_feed.board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -23,8 +31,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping // 게시물 생성
-    public ResponseEntity<BoardResponseDto> createPosts(@Valid @RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
-        BoardResponseDto boardResponseDto = boardService.createPosts(boardRequestDto,session);
+    public ResponseEntity<BoardCreatedResponseDto> createPosts(@Valid @RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
+        BoardCreatedResponseDto boardResponseDto = boardService.createPosts(boardRequestDto,session);
         return new ResponseEntity<>(boardResponseDto, HttpStatus.CREATED); // 201 반환
     }
 
