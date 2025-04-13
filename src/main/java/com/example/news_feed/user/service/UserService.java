@@ -13,5 +13,6 @@ public interface UserService {
 
     void updatePassword(Long id, updatePwRequestDto requestDto, Long loginId);
 
+
 }
 
