@@ -42,6 +42,14 @@
 
 #  📝 API 명세서
 
+📁 User API
+메서드	URL	설명	요청값	응답값
+POST	/api/users/signup	회원가입	username, email, password, age, gender	가입 성공 메시지
+POST	/api/users/login	로그인	email, password	로그인 성공, 세션 저장
+GET	/api/users/{id}	단일 유저 조회	-	id, username, email, age, gender 등
+PUT	/api/users/{id}	유저 정보 수정	username, age, gender 등	수정된 유저 정보
+DELETE	/api/users/{id}	회원 탈퇴	password 검증	탈퇴 성공 메시지
+
 - 로그인
 POST /api/auth/login
 
@@ -53,5 +61,8 @@ GET /api/posts
 
 - 게시글 삭제
 DELETE /api/posts/{id}
+
+
+
 
 
