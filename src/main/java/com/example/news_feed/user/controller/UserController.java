@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 // 유저 관리
-
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

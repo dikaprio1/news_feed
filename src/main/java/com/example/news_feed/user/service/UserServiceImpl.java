@@ -112,6 +112,5 @@ public class UserServiceImpl implements UserService {
         return new DeleteResponseDto(findUser.getDeletedAt(), "회원탈퇴 성공");
     }
 
-
 }
 
