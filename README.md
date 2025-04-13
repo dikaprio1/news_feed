@@ -83,7 +83,27 @@
 
 #  📝 API 예외명세서
 
-| 기능 설명                            | HTTP 상태        | 응답 예시 |
+| 기능 설명 | HTTP 상태 | 응답 예시 |
+|-----------|------------|------------|
+| 인증되지 않은 사용자 요청 | 401 Unauthorized | `{ "status": 401, "message": "로그인 후 이용 가능합니다" }` |
+| 회원가입 시, 중복 이메일 | 400 Bad Request | `{ "status": 400, "message": "이미 사용 중인 이메일입니다" }` |
+| 회원가입 시, 중복 닉네임 | 400 Bad Request | `{ "status": 400, "message": "이미 사용 중인 이름입니다" }` |
+| 이메일 중복 오류 | 409 Conflict | `{ "status": 409, "message": "이미 존재하는 이메일입니다" }` |
+| 게시글 수정, 삭제 권한 없음 | 403 Forbidden | `{ "status": 403, "message": "작성자만 수정/삭제할 수 있습니다" }` |
+| 댓글 수정, 삭제 권한 없음 | 403 Forbidden | `{ "status": 403, "message": "작성자만 수정/삭제할 수 있습니다" }` |
+| 존재하지 않는 게시글 ID 요청 시 | 404 Not Found | `{ "status": 404, "message": "게시글을 찾을 수 없습니다" }` |
+| 로그인 실패 (비밀번호 틀림 시) | 401 Unauthorized | `{ "status": 401, "message": "비밀번호가 일치하지 않습니다" }` |
+| 유효하지 않은 사용자 정보 요청 | 404 Not Found | `{ "status": 404, "message": "유저를 찾을 수 없습니다" }` |
+| 회원가입 시 성별 미입력 | 400 Bad Request | `{ "status": 400, "message": "성별을 입력해주세요" }` |
+| 회원가입 시 나이 미입력 | 400 Bad Request | `{ "status": 400, "message": "나이를 입력해주세요" }` |
+| 본인 인증 실패 (게시글 삭제 등) | 403 Forbidden | `{ "status": 403, "message": "작성자만 삭제할 수 있습니다" }` |
+| 팔로우 요청 중복 | 401 UNAUTHORIZED | `{ "status": 401, "message": "이미 팔로우한 사용자입니다" }` |
+| 본인 요청 시(자기 자신에게 팔로우 요청 시) | 403 FORBIDDEN | `{ "status": 403, "message": "본인은 팔로우할 수 없습니다" }` |
+| 언팔 시, 팔로우 상태 아님 | 400 BAD_REQUEST | `{ "status": 400, "message": "팔로우 상태가 아닙니다" }` |
+| 언팔 시, 유저 ID가 존재하지 않을 경우 | 404 NOT_FOUND | `{ "status": 404, "message": "유저를 찾을 수 없습니다" }` |
+| 댓글의 본인 인증 실패 시 | 403 BAD_REQUEST | `{ "status": 403, "message": "작성자만 삭제할 수 있습니다" }` |
+| 게시글 삭제 요청 시, 비밀번호 오류 | 401 BAD_REQUEST | `{ "status": 401, "message": "비밀번호가 일치하지 않습니다" }` |
+| 게시글 삭제 요청 시, 이메일 오류 | 400 BAD_REQUEST | `{ "status": 400, "message": "이메일이 일치하지 않습니다" }` |
 
 
 
