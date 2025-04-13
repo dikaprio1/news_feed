@@ -41,27 +41,45 @@
 
 
 #  📝 API 명세서
+---
 
-📁 User API
-메서드	URL	설명	요청값	응답값
-POST	/api/users/signup	회원가입	username, email, password, age, gender	가입 성공 메시지
-POST	/api/users/login	로그인	email, password	로그인 성공, 세션 저장
-GET	/api/users/{id}	단일 유저 조회	-	id, username, email, age, gender 등
-PUT	/api/users/{id}	유저 정보 수정	username, age, gender 등	수정된 유저 정보
-DELETE	/api/users/{id}	회원 탈퇴	password 검증	탈퇴 성공 메시지
+## 🧑 유저 관련
 
-- 로그인
-POST /api/auth/login
+| 기능         | HTTP Method | URL                        | Path Variable | Request Param | Request Body 예시 | Response 예시 | 상태 |
+|--------------|--------------|-----------------------------|----------------|----------------|-------------------|----------------|------|
+| 회원가입      | POST         | /api/auth/signup            | X              | X              | `{ "username": "홍길동", "email": "hong@test.com", "password": "Test@1234", "gender": "MALE", "age": 25 }` | 201 Created `{ "message": "회원가입 성공", ... }` 
+| 로그인        | POST         | /api/auth/login             | X              | X              | `{ "email": "hong@test.com", "password": "Test@1234" }` | 200 OK `{ "message": "로그인 성공" }` 
+| 프로필 조회   | GET          | /api/users/{id}             | id(Long)       | X              | X                 | 200 OK `{ "username": "홍길동", ... }` 
+| 이름 수정     | PATCH        | /api/users/{id}/name        | id(Long)       | X              | `{ "username": "김민수" }` | 200 OK<br>`{ "message": "프로필 수정 완료" }` 
+| 비밀번호 수정 | PATCH        | /api/users/{id}/password    | id(Long)       | X              | `{ "oldPassword": "Test@1234", "newPassword": "Test@1235" }` | 200 OK `{ "message": "프로필 수정 완료" }`
+| 회원 탈퇴     | DELETE       | /api/users/{id}             | id(Long)       | X              | `{ "email": "hong@test.com", "password": "Test@1234" }` | 200 OK `{ "message": "회원탈퇴 성공", "deleted_at": "2025-00-00" }`
 
-- 게시글 작성
-POST /api/posts
+---
 
-- 게시글 전체 조회
-GET /api/posts
+## 📝 게시글 관련
 
-- 게시글 삭제
-DELETE /api/posts/{id}
+| 기능         | HTTP Method | URL                      | Path Variable | Request Param | Request Body 예시 | Response 예시 | 상태 |
+|--------------|--------------|---------------------------|----------------|----------------|-------------------|----------------|------|
+| 게시글 작성   | POST         | /api/posts                | X              | X              | `{ "title": "제목", "content": "내용", "image": "img.url" }` | 200 OK `{ "id": 1, "title": "제목", ... }` |
+| 게시글 조회   | GET          | /api/posts/{id}           | id(Long)       | X              | X                 | 200 OK `{ "id": 1, "title": "제목", ... }` 
+| 게시글 목록   | GET          | /api/posts                | X              | X              | X                 | 200 OK `[{ "id": 1, "title": "제목", ... }]` 
+| 뉴스피드 조회 | GET          | /api/posts/newsfeed       | X              | `?page=`       | X                 | 200 OK `[{ "id": 1, "title": "제목", ... }]` 
+| 게시글 수정   | PUT          | /api/posts/{id}           | id(Long)       | X              | `{ "title": "수정된 제목", "content": "수정된 내용", "imageUrl": "img.url" }` | 200 OK `{ "message": "수정 성공" }` 
+| 게시글 삭제   | DELETE       | /api/posts/{id}           | id(Long)       | X              | X                 | 200 OK `{ "message": "삭제 성공" }`
 
+---
+
+## 👥 팔로우 관련
+
+| 기능         | HTTP Method | URL                          | Path Variable | Request Param | Request Body 예시 | Response 예시 | 상태 |
+|--------------|--------------|-------------------------------|----------------|----------------|-------------------|----------------|------|
+| 팔로우 하기   | POST         | /api/follow/{id}              | id(Long)       | X              | `{ "targetId": 3 }` | 200 OK `{ "message": "팔로우 요청 완료" }` 
+| 팔로워 조회   | GET          | /api/follow/followerList      | X              | X              | X                 | 200 OK `[{ "id": 2, "username": "홍길동" }]`
+| 팔로잉 조회   | GET          | /api/follow/followingList     | X              | X              | X                 | 200 O K`[{ "id": 2, "username": "홍길동" }]` 
+| 언팔로우      | DELETE       | /api/follow/delete            | X              | X              | `{ "targetId": 3 }` | 200 OK `{ "message": "언팔로우 완료", "deleted_at": "2025-00-00" }`
+
+
+#  📝 API 예외명세서
 
 
 
