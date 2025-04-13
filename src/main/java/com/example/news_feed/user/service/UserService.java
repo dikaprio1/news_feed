@@ -7,11 +7,11 @@ public interface UserService {
 
     UserResponseDto findById(Long id);
 
-    DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String sessionId);
+    DeleteResponseDto delete(Long id, DeleteRequestDto requestDto, String loginEmail);
 
-    void updateName(Long id, updateNameRequestDto requestDto, String sessionId);
+    void updateName(Long id, updateNameRequestDto requestDto, String loginEmail);
 
-    void updatePassword(Long id, updatePwRequestDto requestDto, String sessionId);
+    void updatePassword(Long id, updatePwRequestDto requestDto, String loginEmail);
 
 }
 
