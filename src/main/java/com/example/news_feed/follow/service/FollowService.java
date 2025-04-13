@@ -4,6 +4,7 @@ import com.example.news_feed.auth.service.AuthServiceImpl;
 import com.example.news_feed.exceptionhandler.AlreadyFollowerException;
 import com.example.news_feed.exceptionhandler.FollowMySelfException;
 import com.example.news_feed.exceptionhandler.FollowNotFoundException;
+import com.example.news_feed.exceptionhandler.NotFollowDeleteException;
 import com.example.news_feed.follow.dto.FollowResponseDto;
 import com.example.news_feed.follow.dto.FollowerResponseDto;
 import com.example.news_feed.follow.dto.FollowingResponseDto;
@@ -75,7 +76,7 @@ public class FollowService {
         User FindByIdUser = userRepository.findByIdOrElseThrow(id);
         boolean exists = followRepository.existsByFollowerIdAndFollowingId(loginUser, FindByIdUser);
         if (!exists) {
-            throw new IllegalStateException("팔로우 되어있지 않은 사용자입니다.");
+            throw new NotFollowDeleteException("팔로우 되어있지 않은 사용자입니다.");
         }
         followRepository.deleteByFollowerIdAndFollowingId(loginUser, FindByIdUser);
         return new FollowResponseDto(loginUser.getName(),FindByIdUser.getName());
