@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UpdateBoardRequestDto {
-    private String title;
-    private String content;
-    private String imageUrl;
+    private final String title;
+    private final String content;
+    private final String imageUrl;
 }
