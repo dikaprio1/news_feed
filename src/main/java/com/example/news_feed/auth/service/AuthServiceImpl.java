@@ -3,6 +3,8 @@ package com.example.news_feed.auth.service;
 import com.example.news_feed.auth.dto.LoginRequestDto;
 import com.example.news_feed.auth.dto.SignupRequestDto;
 import com.example.news_feed.config.PasswordEncoder;
+import com.example.news_feed.exceptionhandler.DuplicateUserException;
+import com.example.news_feed.exceptionhandler.InvalidLoginException;
 import com.example.news_feed.exceptionhandler.UserNotFoundException;
 import com.example.news_feed.user.entity.User;
 import com.example.news_feed.user.repository.UserRepository;
@@ -17,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -31,8 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 이메일 중복체크
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-            log.warn("이미 존재하는 사용자입니다 : " + requestDto.getEmail());
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 존재하는 사용자입니다"); // 중복시 409
+            throw new DuplicateUserException("이미 존재하는 사용자입니다"); // 중복시 409
         }
 
         // 비번 암호화해서 저장
@@ -49,17 +49,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginRequestDto requestDto, HttpServletRequest request) {
-        Optional<User> findUser = userRepository.findByEmail(requestDto.getEmail()); // 나중에 리팩토링 고민
-        if(findUser.isPresent()){
-            User user = findUser.get();
+    public void login(LoginRequestDto requestDto, HttpServletRequest request) { // 아디비번 틀려도 로그인 성공함
+
+            User user = userRepository.findByEmail(requestDto.getEmail())
+                    .orElseThrow(()-> new InvalidLoginException("아이디 또는 비밀번호가 올바르지 않습니다")); // 401
+
             if(passwordEncoder.matches(requestDto.getPassword(),user.getPassword())){
                 HttpSession session = request.getSession();
                 session.setAttribute("user",user.getEmail());
             }else{
-                throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+                throw new InvalidLoginException("아이디 또는 비밀번호가 올바르지 않습니다"); //401
             }
-        }
+
     }
 
     public User getLoginUser(HttpSession session) {
