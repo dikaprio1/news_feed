@@ -27,6 +27,11 @@ import java.time.LocalDateTime;
         @NotNull
         private final String username;
 
+//        private final LocalDateTime createAt;
+
+
+
+
 //         전체필드를 초기화하는 생성자
 //         모든필드를 매개변수로 받아서 초기화하는 생성자
 //         final필드는 생성자에서 무조건 초기화해줘야해서 필요함
@@ -47,16 +52,14 @@ import java.time.LocalDateTime;
 //         Board객체를 한번에 받아서 DTO로 변환해주는 편의생성자
 //         내부에서 전체 생성자를 호출함
 //        public BoardResponseDto(Board board) {
-//            this(
-//                    board.getId(),
-//                    board.getTitle(),
-//                    board.getContent(),
-//                    board.getImageUrl(),
-//                    board.getCreatedAt(),
-//                    board.getModifiedAt(),
-//                    board.getDeletedAt()
-//            );
+//
+//            this.id = board.getId();
+//            this.title = board.getTitle();
+//            this.content = board.getContent();
+//            this.imageUrl = board.getImageUrl();
+//            this.username = board.getUser().getName();
 //        }
+
 
     }
 

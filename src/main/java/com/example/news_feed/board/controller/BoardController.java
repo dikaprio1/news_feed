@@ -2,13 +2,19 @@ package com.example.news_feed.board.controller;
 
 
 import com.example.news_feed.board.dto.BoardCreatedResponseDto;
+import com.example.news_feed.board.dto.BoardNewsFeedResponseDto;
 import com.example.news_feed.board.dto.BoardRequestDto;
 import com.example.news_feed.board.dto.BoardResponseDto;
 import com.example.news_feed.board.dto.DeletePostRequestDto;
+import com.example.news_feed.board.dto.UpdateBoardRequestDto;
 import com.example.news_feed.board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +52,19 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAll());
     }
 
+
+    // 뉴스피드 조회 [페이징]
+    @GetMapping("/newsfeed")
+    public ResponseEntity<List<BoardNewsFeedResponseDto>> getNewsFeed(@PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable, HttpSession session) {
+
+        // 서비스에서 뉴스피드 데이터를 조회
+        Page<BoardNewsFeedResponseDto> newsFeedPage = boardService.getNewsFeed(pageable, session);
+
+        // 응답으로 뉴스피드 데이터와 200 처리
+        return new ResponseEntity<>(newsFeedPage.getContent(),HttpStatus.OK);
+    }
+
+
     // 게시물 조회
     // findById(@PathVariable Long id) : URL경로에서 {id}값을 변수로 추출
     // 반환타입 : ResponseEntity<BoardResponseDto>
@@ -67,8 +86,8 @@ public class BoardController {
    //boardService.update(id, boardRequestDto): 서비스계층에 수정로직 위임, DB에서 게시글찾고, 제목/내용 수정후 저장처리
    //return ResponseEntity.ok().build() : 200OK 응답본문없음, .build()쓰면 void타입응답을 깔끔히 반환가능
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpSession session) {
-        boardService.update(id, boardRequestDto, session);
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody UpdateBoardRequestDto updateBoardRequestDto, HttpSession session) {
+        boardService.update(id, updateBoardRequestDto, session);
         return ResponseEntity.ok().build();
     }
 }
