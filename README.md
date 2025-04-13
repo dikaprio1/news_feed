@@ -55,3 +55,6 @@ GET /api/posts
 DELETE /api/posts/{id}
 
 
+#  📝 API 예외명세서
+
+
