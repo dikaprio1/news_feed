@@ -3,6 +3,9 @@ package com.example.news_feed.board.service;
 
 import com.example.news_feed.board.dto.*;
 import jakarta.servlet.http.HttpSession;
+import com.example.news_feed.board.dto.BoardRequestDto;
+import com.example.news_feed.board.dto.BoardResponseDto;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,6 @@ public interface BoardService {
     Page<BoardNewsFeedResponseDto> getNewsFeed(Pageable pageable, HttpSession session);
 
     @Transactional
-    void update(Long id, BoardRequestDto boardRequestDto, HttpSession session);
+    void update(Long id, UpdateBoardRequestDto updateBoardRequestDto, HttpSession session);
 }
 
