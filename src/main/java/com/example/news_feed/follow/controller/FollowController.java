@@ -23,7 +23,8 @@ public class FollowController {
     @PostMapping("/{id}")
     public ResponseEntity<String> follow(@Valid @PathVariable Long id, HttpSession session){
         FollowResponseDto followResponseDto = followService.followUser(id,session);
-        return new ResponseEntity<>(followResponseDto.getFollowerUserName()+"님이 "+followResponseDto.getFollowingUserName()+"님을 팔로우 하였습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(followResponseDto.getFollowerUserName()+"님이 " +
+                                          followResponseDto.getFollowingUserName()+"님을 팔로우 하였습니다.", HttpStatus.OK);
     }
 
     //팔로워 목록 조회

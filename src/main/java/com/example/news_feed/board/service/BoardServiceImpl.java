@@ -90,26 +90,25 @@ public class BoardServiceImpl implements BoardService {
     }
 */
 
-    // 뉴스피드 조회(팔로잉하는 유저들의 게시글 최신순<-생성순 으로)
+    // 뉴스피드 조회 (팔로잉하는 유저들의 게시글 최신 수정일 순으로)
     @Override
     public Page<BoardNewsFeedResponseDto> getNewsFeed(Pageable pageable, HttpSession session) {
 
         // 세션으로 로그인 한 유저 객체 만들기
         User loginUser = authService.getLoginUser(session);
-        // 로그인 유저의 id값을 이용해서 follow한 following한 사람들의 id값 가져와서 유저 객체 만들기
+        // 로그인 유저의 id값을 이용해서 following한 사람들의 id값들을 가져와서 유저 객체 List 만들기
         List<User> followings = followRepository.findFollowingsByFollowerId(loginUser.getId());
 
         if (followings.isEmpty()) { // 팔로잉한 사람이 없으니 게시글이 안 나온다는 메세지 출력.
             throw new FollowNotFoundException("팔로잉 정보가 없어 게시글을 로드할 수 없습니다.");
         }
-        // 해당 user_id 리스트와 대응되는 게시글을 찾아야 함
-        // in을 통해 List조회가 가능해짐,OrderByCreatedAtDesc를 통해 게시글을 최신 생성순으로 정렬.
 
+        // 가져온 user_id 리스트와 대응되는 게시글을 찾아야 함
+        // In을 통해 List 내에 존재하는 user_id 전부를 조회
         Page<Board> newsfeedPage = boardRepository.findByUserIn(followings, pageable);
 
         // 페이지는 List객체와 달리 stream 기능이 내장되어 있어서 따로 stream으로 변환하지 않아도
         // map을 바로 사용할 수 있음.
-
         return newsfeedPage.map(board -> new BoardNewsFeedResponseDto(
                 board.getId(),
                 board.getTitle(),

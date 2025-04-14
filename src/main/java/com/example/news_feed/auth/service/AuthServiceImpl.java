@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginRequestDto requestDto, HttpServletRequest request) { // 아디비번 틀려도 로그인 성공함
+    public void login(LoginRequestDto requestDto, HttpServletRequest request) {
 
             User user = userRepository.findByEmail(requestDto.getEmail())
                     .orElseThrow(()-> new InvalidLoginException("아이디 또는 비밀번호가 올바르지 않습니다")); // 401
@@ -63,8 +63,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public User getLoginUser(HttpSession session) {
-        Long loginEmail = (Long) session.getAttribute("user");
-        return userRepository.findById(loginEmail)
+        Long loginId = (Long) session.getAttribute("user");
+        return userRepository.findById(loginId)
                 .orElseThrow(() -> new UserNotFoundException("로그인이 필요합니다."));
     }
 }

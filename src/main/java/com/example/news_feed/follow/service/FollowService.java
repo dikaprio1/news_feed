@@ -28,17 +28,17 @@ public class FollowService {
     private final AuthServiceImpl authService;
 
     public FollowResponseDto followUser(Long id, HttpSession session) {
-        User FindByIdUser = userRepository.findByIdOrElseThrow(id);
+        User findByIdUser = userRepository.findByIdOrElseThrow(id);
         User loginUser = authService.getLoginUser(session);
-        if (loginUser.equals(FindByIdUser)) {
+        if (loginUser.equals(findByIdUser)) {
             throw new FollowMySelfException("자기 자신은 팔로우할 수 없습니다.");
         }
-        boolean exists = followRepository.existsByFollowerIdAndFollowingId(loginUser, FindByIdUser);
+        boolean exists = followRepository.existsByFollowerIdAndFollowingId(loginUser, findByIdUser);
         if (exists) {
             throw new AlreadyFollowerException("이미 팔로우한 사용자입니다.");
         }
 
-        Follow follow = new Follow(loginUser, FindByIdUser);
+        Follow follow = new Follow(loginUser, findByIdUser);
 
         followRepository.save(follow);
 
