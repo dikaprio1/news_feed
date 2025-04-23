@@ -19,9 +19,11 @@ import java.util.List;
 public class FollowController {
     private final FollowService followService;
 
+
+    //변경 부분
     //팔로우 기능
     @PostMapping("/{id}")
-    public ResponseEntity<String> follow(@Valid @PathVariable Long id, HttpSession session){
+    public ResponseEntity<String> followww(@Valid @PathVariable Long id, HttpSession session){
         FollowResponseDto followResponseDto = followService.followUser(id,session);
         return new ResponseEntity<>(followResponseDto.getFollowerUserName()+"님이 "+followResponseDto.getFollowingUserName()+"님을 팔로우 하였습니다.", HttpStatus.OK);
     }
